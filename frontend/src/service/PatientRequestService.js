@@ -1,11 +1,10 @@
 import BaseService from '@/service/BaseService';
-import API from '@/constants/api';
 
 export default class PatientRequestService extends BaseService {
     static INSTANCE =  new PatientRequestService()
 
     async getPatientRequests(params){
-        const res = await this.request(
+        return await this.request(
             {
                 path: '/secure/patientRequest/search',
                 method: 'POST',
@@ -17,6 +16,5 @@ export default class PatientRequestService extends BaseService {
                 notifyOnError: true
             }
         )
-        return res.payload
     }
 }

@@ -1,6 +1,7 @@
 import AppConfig from '@/locales/en/global/setting';
 import Menu from '@/locales/en/global/menu';
 import Login from '@/locales/en/views/login';
+import Patient_request from '@/locales/en/views/patient_request';
 
 export default {
     'service.default-message.unknown-error': 'There is something wrong, please comeback and try later.',
@@ -16,5 +17,6 @@ export default {
     'global.notification.default-title.success': 'Success',
     ...AppConfig,
     ...Menu,
-    ...Login
+    ...Login,
+    ...Patient_request
 };

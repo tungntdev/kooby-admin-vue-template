@@ -31,11 +31,10 @@ class PatientRequestRepositoryImpl @Inject constructor(
     }
 
     override fun countByKeywordAndState(keyword: String?, state: Collection<Int>): Long {
-        val likeKeyword = "%${keyword?.trim()}%"
+        val likeKeyword = "${keyword?.trim()}%"
         val countQueryStr = """
             SELECT COUNT(pr) FROM PatientRequest pr
-            WHERE (CAST(pr.numberOrder AS string) LIKE :keyword 
-                OR pr.patientNumber LIKE :keyword 
+            WHERE (pr.patientNumber LIKE :keyword 
                 OR pr.patientName LIKE :keyword 
                 OR pr.medicineCode LIKE :keyword)
                 AND pr.state in :states
@@ -58,8 +57,7 @@ class PatientRequestRepositoryImpl @Inject constructor(
         val queryStr = """
             SELECT pr, a FROM PatientRequest pr
             LEFT JOIN Assignment a ON a.idPatientRequest =pr
-            WHERE (CAST(pr.numberOrder AS string) LIKE :keyword 
-                OR pr.patientNumber LIKE :keyword 
+            WHERE ( pr.patientNumber LIKE :keyword 
                 OR pr.patientName LIKE :keyword 
                 OR pr.medicineCode LIKE :keyword)
                 AND pr.state in :states
