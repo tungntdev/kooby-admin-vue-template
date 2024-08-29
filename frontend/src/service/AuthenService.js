@@ -29,7 +29,6 @@ export default class AuthService extends BaseService {
 
     #updateAccessTokenInfo(data) {
         localStorage.setItem(DEFAULTS.ACCESS.TOKEN, data);
-
         const token = JSON.parse(atob(data.split('.')[1]));
         localStorage.setItem(DEFAULTS.ACCESS.EXPIRATION, token['exp']);
         authStore.updateExpiration();

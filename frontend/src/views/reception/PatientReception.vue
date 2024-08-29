@@ -1,7 +1,8 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue';
+import { inject, onBeforeMount, ref } from 'vue';
 import PatientRequestService from '@/service/PatientRequestService';
 import Common from '@/constants/common';
+import SETTINGS from '@/constants/settings';
 
 const patientRequestService = PatientRequestService.INSTANCE
 
@@ -13,18 +14,25 @@ const currentItems = ref()
 const states = ref([])
 const patientRequests = ref()
 
+const $loading = inject('$loading');
+
 async function fetchPatientRequest(){
     let params ={
         keyword: keyword.value,
         states: states.value,
         pageNo: pageNumber.value
     }
-    const res = await patientRequestService.getPatientRequests(params)
-    patientRequests.value = res.payload.data
-    pageNumber.value = res.payload.currentPage
-    totalPages.value = res.payload.totalPages
-    totalItems.value = res.payload.totalItems
-    console.debug(res.payload)
+    const loader = $loading.show(SETTINGS.LOADING_PROPERTIES);
+    try{
+        const res = await patientRequestService.getPatientRequests(params)
+        patientRequests.value = res.payload.data
+        pageNumber.value = res.payload.currentPage
+        totalPages.value = res.payload.totalPages
+        totalItems.value = res.payload.totalItems
+    }finally {
+        setTimeout(() => loader.hide(), 500);
+    }
+
 }
 
 onBeforeMount(async ()=>{
@@ -81,10 +89,10 @@ const getSeverity = (status) => {
     <div class="card">
         <Toolbar class="mb-2">
             <template v-slot:start>
-                <Button type="button" :label="$tt('patientRequest.button.add')" icon="pi pi-user-plus" :loading="loading" @click="load" />
+                <Button type="button" :label="$tt('patientRequest.button.add')" icon="pi pi-user-plus" />
             </template>
             <template v-slot:end>
-                <Button type="button" :label="$tt('patientRequest.button.search')" icon="pi pi-search" :loading="loading" severity="success" @click="load" />
+                <Button type="button" :label="$tt('patientRequest.button.search')" icon="pi pi-search" severity="success" />
             </template>
         </Toolbar>
         <DataTable :value="patientRequests" size="small" scrollable scrollHeight="500px" tableStyle="min-width: 50rem">

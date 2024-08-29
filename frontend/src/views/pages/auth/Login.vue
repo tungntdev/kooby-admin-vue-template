@@ -49,7 +49,7 @@ const login = async () => {
                             <InputText id="email1" v-model="email" class="w-full md:w-[30rem] mb-8" placeholder="Email address" type="text" />
 
                             <label class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2" for="password1">{{$tt('login.label.password')}}</label>
-                            <Password id="password1" v-model="password" :feedback="false" :toggleMask="true" class="mb-4" fluid placeholder="Password"></Password>
+                            <Password id="password1" v-model="password" :feedback="false" :toggleMask="true" class="mb-4" fluid placeholder="Password" @keyup.enter="login"></Password>
 
                             <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                                 <div class="flex items-center">

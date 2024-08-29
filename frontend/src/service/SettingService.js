@@ -30,7 +30,7 @@ export class SettingService {
     }
 
     getPrimaryTheme() {
-        return localStorage.getItem(SETTINGS.PRIMARY_THEME) || 'emerald';
+        return localStorage.getItem(SETTINGS.PRIMARY_THEME) || 'orange';
     }
 
     setPrimaryTheme(value) {

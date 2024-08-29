@@ -42,7 +42,7 @@ VALUES (1,
         'admin',
         '$2a$12$xIwOx5Yh/V0TtWcq/.VROunfYIQz2hpiEien6u7IrJvqeiGOX7yeC',
         1,
-        '["app:user", "app:admin"]',
+        '["USER", "ADMIN"]',
         'admin');
 
 ALTER TABLE users AUTO_INCREMENT = 1000;

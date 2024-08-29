@@ -2,8 +2,28 @@
 import { useLayout } from '@/layout/composables/layout';
 import AppConfigurator from './AppConfigurator.vue';
 import LangPalette from '@/components/LangPalette.vue';
+import { useConfirm } from 'primevue/useconfirm';
+import { useRouter } from 'vue-router';
+import PageSpec from '@/router/page';
 
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
+const confirm = useConfirm();
+
+const router = useRouter();
+const confirmationLogout = async () => {
+    confirm.require({
+        group: 'headless',
+        message: 'Are you want to logout?',
+        accept: async () => {
+            localStorage.removeItem('AppAccessToken')
+            localStorage.removeItem('AppAccessExpiration')
+            window.location.reload()
+        },
+        reject: () => {
+            console.debug("Cancel")
+        }
+    });
+}
 </script>
 
 <template>
@@ -54,10 +74,21 @@ const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
                     </button>
-                    <button class="layout-topbar-action" type="button">
+                    <button class="layout-topbar-action" type="button" @click="confirmationLogout($event)">
                         <i class="pi pi-user"></i>
                         <span>Profile</span>
                     </button>
+                    <ConfirmPopup group="headless">
+                        <template #container="{ message, acceptCallback, rejectCallback }">
+                            <div class="rounded p-4">
+                                <span>{{ message.message }}</span>
+                                <div class="flex items-center gap-2 mt-4">
+                                    <Button label="Logout" @click="acceptCallback" size="small"></Button>
+                                    <Button label="Cancel" outlined @click="rejectCallback" severity="secondary" size="small" text></Button>
+                                </div>
+                            </div>
+                        </template>
+                    </ConfirmPopup>
                 </div>
             </div>
         </div>

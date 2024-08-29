@@ -107,11 +107,11 @@ create table if not exists state_history
 INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (1, 'ADMIN', 'Chủ sở hữu phần mềm', 1, '2024-08-20 12:45:30', NULL, '2024-08-20 12:45:30', NULL);
 INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (2, 'SECRETARY', 'Thư ký', 1, '2024-08-20 12:45:42', NULL, '2024-08-20 12:45:42', NULL);
 INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (3, 'COPY_MAN', 'Người sao chép', 1, '2024-08-20 12:45:56', NULL, '2024-08-20 12:45:56', NULL);
-INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (4, 'APPROVER', 'Người xác nhận', 1, '2024-08-20 12:46:09', NULL, '2024-08-20 12:46:09', NULL);
+INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (4, 'VALIDATOR', 'Người xác nhận', 1, '2024-08-20 12:46:09', NULL, '2024-08-20 12:46:09', NULL);
 INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (5, 'LEADER', 'Lãnh đạo', 1, '2024-08-20 12:46:21', NULL, '2024-08-20 12:46:21', NULL);
 INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (6, 'DATA_ENTRY_PERSON', 'Người tiếp đón', 1, '2024-08-20 12:46:33', NULL, '2024-08-20 12:46:33', NULL);
 INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (7, 'MANAGER', 'Người quản lý', 1, '2024-08-20 12:46:44', NULL, '2024-08-20 12:46:44', NULL);
-
+INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (8, 'USER', 'Quyền dùng chung', 1, '2024-08-20 12:46:44', NULL, '2024-08-20 12:46:44', NULL);
 
 INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (1, 0, 'PENDING', 'Chưa xử lý', 1, '2024-08-20 12:50:24', NULL, '2024-08-20 12:50:24', NULL);
 INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (2, 1, 'ASSIGNED', 'Đã phân công', 1, '2024-08-20 12:50:37', NULL, '2024-08-20 12:50:37', NULL);
