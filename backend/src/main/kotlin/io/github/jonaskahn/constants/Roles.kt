@@ -9,4 +9,5 @@ object Roles {
     const val LEADER = "LEADER"
     const val DATA_ENTRY_PERSON = "DATA_ENTRY_PERSON"
     const val MANAGER = "MANAGER"
+    const val DOCUMENT_ISSUER = "DOCUMENT_ISSUER"
 }

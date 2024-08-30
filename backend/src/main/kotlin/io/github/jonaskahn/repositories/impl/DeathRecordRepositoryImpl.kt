@@ -1,5 +1,7 @@
 package io.github.jonaskahn.repositories.impl
 
+import io.github.jonaskahn.constants.Defaults
+import io.github.jonaskahn.controllers.deathrecord.DeathRecordForm
 import io.github.jonaskahn.entities.DeathRecord
 import io.github.jonaskahn.entities.PatientRequest
 import io.github.jonaskahn.entities.enums.Status
@@ -11,11 +13,11 @@ import jakarta.persistence.EntityManager
 class DeathRecordRepositoryImpl @Inject constructor(
     override val entityManager: EntityManager
 ): AbstractBaseRepository(entityManager), DeathRecordRepository {
-    override fun create(deathRecord: DeathRecord) {
+    override fun create(deathRecord: DeathRecordForm) {
         entityManager.persist(deathRecord)
     }
 
-    override fun update(deathRecord: DeathRecord) {
+    override fun update(deathRecord: DeathRecordForm) {
         entityManager.merge(deathRecord)
     }
 
@@ -27,12 +29,12 @@ class DeathRecordRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun countByKeywordAndState(keyword: String?, statuses: Collection<Int>): Long {
+    override fun countByKeywordAndState(keyword: String?, status: Collection<Int>): Long {
         val likeKeyword = "${keyword?.trim()}%"
 
         val countQueryStr = """
         SELECT COUNT(dr) FROM DeathRecord dr
-        WHERE (dr.patientName LIKE :keyword 
+        WHERE (dr.patientName LIKE :keyword
             OR (CAST(:keywordInt AS integer) IS NOT NULL AND dr.deathNumber = CAST(:keywordInt AS integer)) 
             OR (CAST(:keywordInt AS integer) IS NOT NULL AND dr.patientNumber = CAST(:keywordInt AS integer))
             )
@@ -43,17 +45,35 @@ class DeathRecordRepositoryImpl @Inject constructor(
         countQuery.setParameter("keyword", likeKeyword)
         val keywordInt: Int? = keyword?.trim()?.toIntOrNull()
         countQuery.setParameter("keywordInt", keywordInt)
-        countQuery.setParameter("statuses", statuses)
+        countQuery.setParameter("statuses", status)
         return countQuery.singleResult
     }
 
 
     override fun searchByKeywordAndStateAndOffset(
         keyword: String?,
-        state: Collection<Int>,
+        status: Collection<Int>,
         offset: Long
     ): Collection<DeathRecord> {
-        TODO("Not yet implemented")
+        val likeKeyword = "${keyword?.trim()}%"
+        val queryStr  = """
+        SELECT dr FROM DeathRecord dr
+        WHERE (dr.patientName LIKE :keyword
+            OR (CAST(:keywordInt AS integer) IS NOT NULL AND dr.deathNumber = CAST(:keywordInt AS integer)) 
+            OR (CAST(:keywordInt AS integer) IS NOT NULL AND dr.patientNumber = CAST(:keywordInt AS integer))
+            )
+            AND dr.status IN :statuses
+            ORDER BY dr.id DESC
+    """
+
+        val query = entityManager.createQuery(queryStr, DeathRecord::class.java)
+        query.setParameter("keyword", likeKeyword)
+        val keywordInt: Int? = keyword?.trim()?.toIntOrNull()
+        query.setParameter("keywordInt", keywordInt)
+        query.setParameter("statuses", status)
+        query.firstResult = offset.toInt()
+        query.maxResults = Defaults.Pageable.DEFAULT_PAGE_SIZE
+        return query.resultList
     }
 
 }

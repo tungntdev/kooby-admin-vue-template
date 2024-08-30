@@ -12,7 +12,10 @@ import jakarta.inject.Inject
 
 @Tag(name = "Patient Request", description = "APIs for managing patient requests")
 @Path("secure")
-class PatientRequestController @Inject constructor(private val patientRequestService: PatientRequestService, private val accessVerifier: AccessVerifier) {
+class PatientRequestController @Inject constructor(
+    private val patientRequestService: PatientRequestService,
+    private val accessVerifier: AccessVerifier
+) {
 
     @POST("/patientRequest/create")
     fun createNewRequest(request: PatientRequestForm) {
