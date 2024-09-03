@@ -12,7 +12,7 @@ interface DeathRecordService {
     fun update(record: DeathRecordForm)
     fun delete(recordId: Int)
 
-    fun search(
+    fun searchRecord(
         keyword: String? = null,
         statuses: Collection<Status> = listOf(Status.ACTIVATED),
         pageNo: Long = 0L,

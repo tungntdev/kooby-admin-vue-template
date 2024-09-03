@@ -28,7 +28,7 @@ class UserController @Inject constructor(private val userService: UserService) {
         userService.createUser(request)
     }
 
-    @POST("/user/search")
+    @POST("/user/searchRecord")
     fun search(request: UserSearchRequest): PageData<UserDto> {
         return userService.search(request.keyword, request.statuses, request.pageNo)
     }

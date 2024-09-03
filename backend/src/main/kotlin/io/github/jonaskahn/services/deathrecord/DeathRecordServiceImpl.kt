@@ -23,13 +23,17 @@ class DeathRecordServiceImpl @Inject constructor(
         return repository.delete(recordId)
     }
 
-    override fun search(keyword: String?, statuses: Collection<Status>, pageNo: Long): PageData<DeathRecord> {
+    override fun searchRecord(
+        keyword: String?,
+        statuses: Collection<Status>,
+        pageNo: Long
+    ): PageData<DeathRecord> {
         return super.search(
             statuses,
             listOf(),
             pageNo,
-            {status, _ -> repository.countByKeywordAndState(keyword, status)},
-            {status, _, offset -> repository.searchByKeywordAndStateAndOffset(keyword, status, offset)}
+            {status, _ -> repository.countByKeywordAndStatus(keyword, status)},
+            {status, _, offset -> repository.searchByKeywordAndStatusAndOffset(keyword, status, offset)}
         )
     }
 }

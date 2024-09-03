@@ -35,7 +35,7 @@ class PatientRequestController @Inject constructor(
         return patientRequestService.deleteRequest(id)
     }
 
-    @POST("/patientRequest/search")
+    @POST("/patientRequest/searchRecord")
     fun searchPatientRequest(request: SearchRequestForm): PageData<PatientRequestDto> {
         accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
         return patientRequestService.search(request.keyword, request.states, request.pageNo)
