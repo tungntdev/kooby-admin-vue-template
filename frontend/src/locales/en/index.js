@@ -2,6 +2,9 @@ import AppConfig from '@/locales/en/global/setting';
 import Menu from '@/locales/en/global/menu';
 import Login from '@/locales/en/views/login';
 import Patient_request from '@/locales/en/views/patient_request';
+import Death_number_manager from '@/locales/en/views/death_number_manager';
+import Death_number_form_component from '@/locales/en/views/death_number_form_component';
+import Death_number_confirm_delete from '@/locales/en/views/death_number_confirm_delete';
 
 export default {
     'service.default-message.unknown-error': 'There is something wrong, please comeback and try later.',
@@ -18,5 +21,8 @@ export default {
     ...AppConfig,
     ...Menu,
     ...Login,
-    ...Patient_request
+    ...Patient_request,
+    ...Death_number_manager,
+    ...Death_number_form_component,
+    ...Death_number_confirm_delete
 };

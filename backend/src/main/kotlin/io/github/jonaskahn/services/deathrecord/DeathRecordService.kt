@@ -18,4 +18,5 @@ interface DeathRecordService {
         pageNo: Long = 0L,
     ): PageData<DeathRecord>
 
+    fun findNextDeathNumber(): Long
 }

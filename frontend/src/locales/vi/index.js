@@ -2,6 +2,9 @@ import AppConfig from '@/locales/vi/global/setting';
 import Menu from '@/locales/vi/global/menu';
 import Login from '@/locales/vi/views/login';
 import Patient_request from '@/locales/vi/views/patient_request';
+import Death_number_manager from '@/locales/vi/views/death_number_manager';
+import Death_number_form_component from '@/locales/vi/views/death_number_form_component';
+import Death_number_confirm_delete from '@/locales/vi/views/death_number_confirm_delete';
 
 export default {
     'service.default-message.unknown-error': 'Đã có sự cố xảy ra. Vui lòng thử lại sau.',
@@ -18,5 +21,8 @@ export default {
     ...AppConfig,
     ...Menu,
     ...Login,
-    ...Patient_request
+    ...Patient_request,
+    ...Death_number_manager,
+    ...Death_number_form_component,
+    ...Death_number_confirm_delete
 };

@@ -7,6 +7,13 @@ const COMMON = {
         DIRECTOR_APPROVED: 4,
         REJECTED: 5,
         COMPLETE: 6
+    },
+
+    STATUS: {
+        ACTIVATED: 1,
+        INACTIVATED: 0,
+        LOCK: 3,
+        DELETED: 9
     }
 };
 

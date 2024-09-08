@@ -58,9 +58,28 @@ const PageSpec = {
                     permissions: []
                 },
                 component: () => import('@/views/reception/PatientReception.vue')
-            },
+            }
         },
-        PAGE: {}
+        DEATH_NUMBER: {
+            path: '/death/manager',
+            name: 'death',
+            meta: {
+                title: 'page.menu-title.page.number-allocation',
+                permissions: []
+            },
+            component: () => import('@/views/deathnumber/Manager.vue')
+        },
+        PAGE: {
+            FORM_LAYOUT: {
+                path: '/uikit/formlayout',
+                name: 'formlayout',
+                meta: {
+                    title: 'page.menu-title.page.number-allocation',
+                    permissions: []
+                },
+                component: () => import('@/views/uikit/FormLayout.vue')
+            }
+        }
     }
 };
 

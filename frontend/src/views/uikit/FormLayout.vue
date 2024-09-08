@@ -48,12 +48,12 @@ const dropdownItem = ref(null);
                 <div class="card flex flex-col gap-4">
                     <div class="font-semibold text-xl">Horizontal</div>
                     <div class="grid grid-cols-12 gap-2">
-                        <label class="flex items-center col-span-12 mb-2 md:col-span-2 md:mb-0" for="name3">Name</label>
-                        <div class="col-span-12 md:col-span-10">
+                        <label class="flex items-center col-span-3 mb-2" for="name3">Name</label>
+                        <div class="col-span-6">
                             <InputText id="name3" type="text" />
                         </div>
                     </div>
-                    <div class="grid grid-cols-12 gap-2">
+                    <div class="grid grid-cols-6 gap-2">
                         <label class="flex items-center col-span-12 mb-2 md:col-span-2 md:mb-0" for="email3">Email</label>
                         <div class="col-span-12 md:col-span-10">
                             <InputText id="email3" type="text" />

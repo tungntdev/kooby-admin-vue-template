@@ -13,15 +13,13 @@ const router = createRouter({
         {
             path: '/',
             component: AppLayout,
-            children: [
-                page.APP.DASHBOARD,
-                page.APP.PATIENT_RECEPTION.RECEPTION
-            ]
+            children: [page.APP.DASHBOARD, page.APP.PATIENT_RECEPTION.RECEPTION, page.APP.DEATH_NUMBER]
         },
         page.AUTH.LOGIN,
         page.ACCESS.NOT_FOUND,
         page.ACCESS.ERROR,
-        page.ACCESS.DENIED
+        page.ACCESS.DENIED,
+        page.APP.PAGE.FORM_LAYOUT
     ]
 });
 

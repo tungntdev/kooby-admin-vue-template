@@ -1,7 +1,5 @@
 package io.github.jonaskahn.entities
 
-import io.github.jonaskahn.entities.converter.StatusConverter
-import io.github.jonaskahn.entities.enums.Status
 import jakarta.persistence.*
 import jakarta.validation.constraints.Size
 import org.hibernate.annotations.ColumnDefault
@@ -9,7 +7,7 @@ import java.time.Instant
 
 @Entity
 @Table(name = "death_record")
-open class DeathRecord: BaseEntity() {
+open class DeathRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -56,7 +54,7 @@ open class DeathRecord: BaseEntity() {
     open var submitter: String? = null
 
     @Column(name = "receiver")
-    open var receiver: Int? = null
+    open var receiver: Long? = null
 
     @Lob
     @Column(name = "diagnosis_of_death")
@@ -72,8 +70,20 @@ open class DeathRecord: BaseEntity() {
     @Column(name = "submitter_record_date")
     open var submitterRecordDate: Instant? = null
 
-    @ColumnDefault("1")
-    @Column(name = "status", nullable = false)
-    @Convert(converter = StatusConverter::class)
-    open var status: Status? = Status.ACTIVATED
+
+    @Column(name = "created_by")
+    open var createdBy: Long? = null
+
+    @Column(name = "created_at")
+    open var createdAt: Instant? = null
+
+    @Column(name = "updated_by")
+    open var updatedBy: Long? = null
+
+    @Column(name = "updated_at")
+    open var updatedAt: Instant? = null
+
+    @ColumnDefault("4")
+    @Column(name = "status")
+    open var status: Int? = null
 }

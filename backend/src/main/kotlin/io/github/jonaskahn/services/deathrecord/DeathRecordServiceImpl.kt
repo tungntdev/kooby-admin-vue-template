@@ -10,13 +10,17 @@ import jakarta.inject.Inject
 
 class DeathRecordServiceImpl @Inject constructor(
     private val repository: DeathRecordRepository
-    ) : DeathRecordService, PagingService() {
+) : DeathRecordService, PagingService() {
     override fun create(record: DeathRecordForm) {
-        return repository.create(record)
+        val newRecord = DeathRecordMapper.INSTANCE.toDeathRecord(record)
+        return repository.create(newRecord)
     }
 
     override fun update(record: DeathRecordForm) {
-        return repository.update(record)
+        val existingRecord = repository.findById(record.id!!)
+        DeathRecordMapper.INSTANCE.updateDeathRecordFromForm(record, existingRecord)
+
+        return repository.update(existingRecord)
     }
 
     override fun delete(recordId: Int) {
@@ -32,8 +36,12 @@ class DeathRecordServiceImpl @Inject constructor(
             statuses,
             listOf(),
             pageNo,
-            {status, _ -> repository.countByKeywordAndStatus(keyword, status)},
-            {status, _, offset -> repository.searchByKeywordAndStatusAndOffset(keyword, status, offset)}
+            { status, _ -> repository.countByKeywordAndStatus(keyword, status) },
+            { status, _, offset -> repository.searchByKeywordAndStatusAndOffset(keyword, status, offset) }
         )
+    }
+
+    override fun findNextDeathNumber(): Long {
+        return repository.findNextDeathNumber()
     }
 }

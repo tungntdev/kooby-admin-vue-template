@@ -2,13 +2,12 @@ import NotificationService from '@/service/NotificationService';
 import { http, ResponseType } from '@/common/http';
 import router from '@/router';
 import PageSpec from '@/router/page';
-import logger from '@/common/logger';
 import DEFAULTS from '@/constants/app';
 
 export default class BaseService {
     static #showMessage(res, notifySuccess, notifyError) {
         let message = res.status === ResponseType.UNDEFINED ? 'service.default-message.unknown-error' : res.message;
-        logger.debug(`Message: ${message}`);
+        //logger.debug(`Message: ${message}`);
         if (notifySuccess && res.status === ResponseType.SUCCESS) {
             this.showSuccessMessage(message);
             return;
@@ -110,7 +109,7 @@ export default class BaseService {
             url: spec.path,
             method: spec.method,
             data: spec.data,
-            headers: {Authorization: `Bearer ${localStorage.getItem(DEFAULTS.ACCESS.TOKEN)}`}
+            headers: { Authorization: `Bearer ${localStorage.getItem(DEFAULTS.ACCESS.TOKEN)}` }
         });
 
         return BaseService.#handleResponse(res, options);
