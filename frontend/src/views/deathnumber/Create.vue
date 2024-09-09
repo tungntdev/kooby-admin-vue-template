@@ -10,15 +10,8 @@ const visible = ref(false);
 defineExpose({ visible });
 const formComponentRef = ref();
 
-const nextDeathNumber = ref();
-onBeforeMount(async () => {
-    nextDeathNumber.value = await deathNumberService.getNextDeathNumber();
-});
-watch(visible, async (newValue) => {
-    if (newValue) {
-        console.debug(newValue);
-        nextDeathNumber.value = await deathNumberService.getNextDeathNumber();
-    }
+const props = defineProps({
+    nextNumber: null
 });
 
 const $loading = inject('$loading');
@@ -43,7 +36,7 @@ async function onClickSave() {
     <Dialog v-model:visible="visible" :style="{ width: '60vw' }" :header="$tt('death-number-form-component.title.create')" modal>
         <Fluid>
             <div class="card flex flex-col gap-6 w-full">
-                <form-component ref="formComponentRef" :nextNumber="nextDeathNumber"></form-component>
+                <form-component ref="formComponentRef" :nextNumber="props.nextNumber"></form-component>
                 <div class="flex flex-col justify-end md:flex-row gap-8">
                     <div class="flex flex-row gap-2">
                         <Button type="button" :label="$tt('death-number-form-component.button.cancel')" severity="secondary" @click="visible = false"></Button>

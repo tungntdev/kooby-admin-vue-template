@@ -14,7 +14,9 @@ const COMMON = {
         INACTIVATED: 0,
         LOCK: 3,
         DELETED: 9
-    }
+    },
+
+    DEFAULT_ROW_PAGE: 10
 };
 
 export default COMMON;

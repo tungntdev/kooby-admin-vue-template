@@ -2,33 +2,24 @@
 import { onBeforeMount, reactive, ref, watch } from 'vue';
 import { useCommonStore } from '@/store/commonStore';
 import { storeToRefs } from 'pinia';
+import DeathNumberService from '@/service/DeathNumberService';
 
 const props = defineProps({
-    dataFormEdit: [],
-    nextNumber: null
+    dataFormEdit: []
 });
-
-const updateDataInput = async () => {
+const deathNumberService = DeathNumberService.INSTANCE;
+onBeforeMount(async () => {
     if (props.dataFormEdit) {
         Object.assign(dataInput, props.dataFormEdit);
-        if (props.dataFormEdit.receptionDate) {
-            dataInput.receptionDate = new Date(props.dataFormEdit.receptionDate);
-        }
+        dataInput.receptionDate = new Date(props.dataFormEdit.receptionDate);
         if (props.dataFormEdit.submitterRecordDate) {
             dataInput.submitterRecordDate = new Date(props.dataFormEdit.submitterRecordDate);
         }
-    } else if (props.nextNumber !== null) {
-        dataInput.deathNumber = props.nextNumber;
+    } else {
+        dataInput.deathNumber = await deathNumberService.getNextDeathNumber();
     }
-};
+});
 
-watch(
-    () => [props.dataFormEdit, props.nextNumber],
-    async () => {
-        await updateDataInput();
-    },
-    { immediate: true }
-);
 const dataInput = reactive({
     deathNumber: null,
     patientName: null,
@@ -131,8 +122,9 @@ defineExpose({ dataInput, validation, checkValidation });
     <div class="flex flex-col md:flex-row gap-8">
         <div class="grid grid-cols-12 gap-8">
             <div class="flex flex-wrap col-span-3 gap-2 w-full">
-                <label for="sex">{{ $tt('death-number-form-component.label.sex') }}</label>
-                <Dropdown id="sex" v-model="dataInput.sex" :options="sexList" editable option-value="name" optionLabel="name"></Dropdown>
+                <label for="sex">{{ $tt('death-number-form-component.label.sex') }}<span class="text-red-500">*</span></label>
+                <Dropdown id="sex" v-model="dataInput.sex"  @change="resetValidation('sex')" :class="{ 'p-invalid': validation.sex !== null && !validation.sex }" :options="sexList" editable option-value="name" optionLabel="name"></Dropdown>
+                <small v-if="validation.sex !== null && !validation.sex" class="p-error">{{ $tt('death-number-form-component.label.error-input') }}</small>
             </div>
             <div class="flex flex-wrap col-span-3 gap-2 w-full">
                 <label for="birthday">{{ $tt('death-number-form-component.label.birthday') }}<span class="text-red-500">*</span></label>

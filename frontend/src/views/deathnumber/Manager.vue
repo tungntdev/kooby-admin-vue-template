@@ -10,7 +10,7 @@ import Common from '@/constants/common';
 const deathNumberService = DeathNumberService.INSTANCE;
 
 const keyword = ref('');
-const pageNumber = ref(0);
+const pageNumber = ref(1);
 const totalPages = ref();
 const totalItems = ref();
 const currentItems = ref();
@@ -40,21 +40,26 @@ onBeforeMount(async () => {
     await fetchDeathNumbers();
 });
 
-function truncateString(str, maxLength = 45) {
-    if (str.length <= maxLength) {
-        return str;
+function truncateString(str, maxLength = 40) {
+    try {
+        if (str.length <= maxLength) {
+            return str;
+        }
+        return str.substring(0, maxLength) + '...';
+    }catch (err) {
+        return null
     }
-    return str.substring(0, maxLength) + '...';
+
 }
 
 const changePage = async () => {
+    console.debug("=CurrentItems: "+ currentItems.value)
     pageNumber.value = currentItems.value / 10 + 1;
     await fetchDeathNumbers();
 };
 
 const createRef = ref();
-
-function onClickNew() {
+async function onClickNew() {
     createRef.value.visible = true;
 }
 
@@ -117,7 +122,7 @@ function onClickDelete(id) {
                     </template>
                 </Column>
             </DataTable>
-            <Paginator :rows="10" :totalRecords="totalItems" v-model:first="currentItems" @update:first="changePage()">
+            <Paginator :rows="Common.DEFAULT_ROW_PAGE" :totalRecords="totalItems" v-model:first="currentItems" @update:first="changePage()">
                 <template #start="slotProps"> {{ $tt('death-number-manager.table.total') }} {{ totalItems }}</template>
                 <template #end></template>
             </Paginator>
