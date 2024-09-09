@@ -46,19 +46,19 @@ function truncateString(str, maxLength = 40) {
             return str;
         }
         return str.substring(0, maxLength) + '...';
-    }catch (err) {
-        return null
+    } catch (err) {
+        return null;
     }
-
 }
 
 const changePage = async () => {
-    console.debug("=CurrentItems: "+ currentItems.value)
+    console.debug('=CurrentItems: ' + currentItems.value);
     pageNumber.value = currentItems.value / 10 + 1;
     await fetchDeathNumbers();
 };
 
 const createRef = ref();
+
 async function onClickNew() {
     createRef.value.visible = true;
 }
@@ -116,7 +116,7 @@ function onClickDelete(id) {
                 <Column :header="$tt('death-number-manager.table.actions')" style="min-width: 50px">
                     <template #body="{ data }">
                         <div class="flex flex-row">
-                            <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="onClickEdit(data)" />
+                            <Button icon="pi pi-pencil" outlined rounded severity="secondary" class="mr-2" @click="onClickEdit(data)" />
                             <Button icon="pi pi-trash" outlined rounded severity="danger" @click="onClickDelete(data.id)" />
                         </div>
                     </template>

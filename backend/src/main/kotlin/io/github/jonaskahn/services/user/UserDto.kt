@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import io.github.jonaskahn.assistant.jackson.MessageJsonSerializer
 import io.github.jonaskahn.assistant.jackson.StringToStringCollectionDeserializer
 import io.github.jonaskahn.entities.enums.Status
-import jakarta.persistence.Column
 import java.io.Serializable
 import java.time.Instant
 
@@ -15,7 +14,7 @@ open class UserDto : Serializable {
     open var username: String? = null
     open var email: String? = null
 
-    @Column(name = "first_name")
+    @JsonAlias("first_name")
     open var firstName: String? = null
 
     @JsonAlias("full_name")
@@ -32,7 +31,7 @@ open class UserDto : Serializable {
     @JsonDeserialize(using = StringToStringCollectionDeserializer::class)
     open var roles: List<String> = listOf()
 
-    @Column(name = "image_link")
+    @JsonAlias("image_link")
     open var imageLink: String? = null
 
     @JsonAlias("created_at")

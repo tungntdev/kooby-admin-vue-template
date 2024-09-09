@@ -10,6 +10,7 @@ import io.github.jonaskahn.controllers.auth.AuthController
 import io.github.jonaskahn.controllers.deathrecord.DeathRecordController
 import io.github.jonaskahn.controllers.department.DepartmentController
 import io.github.jonaskahn.controllers.patientrequest.PatientRequestController
+import io.github.jonaskahn.controllers.storage.StorageController
 import io.github.jonaskahn.controllers.user.UserController
 import io.github.jonaskahn.exception.*
 import io.github.jonaskahn.extensions.JedisModule
@@ -208,6 +209,7 @@ fun Kooby.routes() {
         mvc(PatientRequestController::class.java)
         mvc(DepartmentController::class.java)
         mvc(DeathRecordController::class.java)
+        mvc(StorageController::class.java)
     }) {})
 }
 
