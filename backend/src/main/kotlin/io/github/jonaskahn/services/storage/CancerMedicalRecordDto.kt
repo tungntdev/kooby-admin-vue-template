@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import io.github.jonaskahn.assistant.jackson.MessageJsonSerializer
 import io.github.jonaskahn.entities.enums.Status
+import jakarta.persistence.Table
+import java.io.Serializable
 import java.time.Instant
 
-open class CancerMedicalRecordDto {
+open class CancerMedicalRecordDto: Serializable {
     open var id: Int? = null
 
     open var department: String? = null
@@ -37,8 +39,7 @@ open class CancerMedicalRecordDto {
     @JsonAlias("out_date")
     open var outDate: Instant? = null
     open var diagnose: String? = null
-
-    open var status: Status? = Status.ACTIVATED
+    open var status: Status? = null
         set(value) {
             field = value
             this.statusName = value?.description

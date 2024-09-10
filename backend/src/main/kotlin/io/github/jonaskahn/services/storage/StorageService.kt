@@ -13,7 +13,7 @@ interface StorageService {
 
     fun search(
         keyword: String? = null,
-        statuses: Collection<Status> = listOf(Status.ACTIVATED),
+        statuses: Collection<Status>?,
         pageNo: Long = 0L,
     ): PageData<CancerMedicalRecordDto>
 }

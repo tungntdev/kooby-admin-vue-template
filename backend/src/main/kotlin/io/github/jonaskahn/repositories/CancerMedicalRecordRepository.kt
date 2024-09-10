@@ -3,6 +3,7 @@ package io.github.jonaskahn.repositories
 import com.google.inject.ImplementedBy
 import io.github.jonaskahn.entities.CancerMedicalRecord
 import io.github.jonaskahn.repositories.impl.CancerMedicalRecordRepositoryImpl
+import io.github.jonaskahn.services.storage.CancerMedicalRecordDto
 
 @ImplementedBy(CancerMedicalRecordRepositoryImpl::class)
 interface CancerMedicalRecordRepository {
@@ -14,7 +15,7 @@ interface CancerMedicalRecordRepository {
         keyword: String?,
         status: Collection<Int>,
         offset: Long
-    ): Collection<CancerMedicalRecord>
+    ): Collection<CancerMedicalRecordDto>
 
     fun findNextCancerMedical(): Long
 

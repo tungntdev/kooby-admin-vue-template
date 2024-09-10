@@ -12,4 +12,8 @@ interface CancerMedicalRecordMapper {
     }
     
     fun cancerRecordRequestToCancerRecord(cancer: CancerMedicalRecordRequest): CancerMedicalRecord
+
+    fun cancerRecordToDto(cancer: CancerMedicalRecord): CancerMedicalRecordDto
+
+    fun cancerRecordsToDtos(cancerList: List<CancerMedicalRecord>): List<CancerMedicalRecordDto>
 }
