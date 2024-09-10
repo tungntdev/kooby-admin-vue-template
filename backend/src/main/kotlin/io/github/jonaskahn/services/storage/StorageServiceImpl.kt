@@ -27,16 +27,21 @@ internal class StorageServiceImpl @Inject constructor(
 
     override fun search(
         keyword: String?,
-        statuses: Collection<Status>?,
+        statuses: Collection<Status>,
         pageNo: Long
     ): PageData<CancerMedicalRecordDto> {
-        val resolvedStatuses = statuses ?: listOf(Status.ACTIVATED)
         return super.search(
-            resolvedStatuses,
+            statuses,
             listOf(),
             pageNo,
-            {status, _ ->cancerMedicalRecordRepository.countByKeywordAndStatus(keyword, status)},
-            {status, _, offset -> cancerMedicalRecordRepository.searchByKeywordAndStatusAndOffset(keyword, status, offset)}
+            { status, _ -> cancerMedicalRecordRepository.countByKeywordAndStatus(keyword, status) },
+            { status, _, offset ->
+                cancerMedicalRecordRepository.searchByKeywordAndStatusAndOffset(
+                    keyword,
+                    status,
+                    offset
+                )
+            }
         )
     }
 }
