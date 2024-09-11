@@ -3,14 +3,12 @@ package io.github.jonaskahn.repositories.impl
 import io.github.jonaskahn.constants.Defaults
 import io.github.jonaskahn.entities.CancerMedicalRecord
 import io.github.jonaskahn.entities.enums.Status
-import io.github.jonaskahn.middlewares.context.UserContextHolder
 import io.github.jonaskahn.repositories.AbstractBaseRepository
 import io.github.jonaskahn.repositories.CancerMedicalRecordRepository
 import io.github.jonaskahn.services.storage.CancerMedicalRecordDto
 import io.github.jonaskahn.services.storage.CancerMedicalRecordMapper
 import jakarta.inject.Inject
 import jakarta.persistence.EntityManager
-import java.time.Instant
 
 class CancerMedicalRecordRepositoryImpl @Inject constructor(
     override val entityManager: EntityManager
@@ -18,7 +16,7 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
     override fun create(cancerMedicalRecord: CancerMedicalRecord) {
 //        cancerMedicalRecord.createdAt = Instant.now()
 //        cancerMedicalRecord.createdBy = UserContextHolder.getCurrentUserId()
-        cancerMedicalRecord.status = Status.ACTIVATED
+        cancerMedicalRecord.status = Status.Code.ACTIVATED
 
         entityManager.persist(cancerMedicalRecord)
     }
@@ -71,7 +69,7 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
         query.setParameter("status", status)
         query.firstResult = offset.toInt()
         query.maxResults = Defaults.Pageable.DEFAULT_PAGE_SIZE
-        return  CancerMedicalRecordMapper.INSTANCE.cancerRecordsToDtos(query.resultList)
+        return CancerMedicalRecordMapper.INSTANCE.cancerRecordsToDtos(query.resultList)
     }
 
     override fun findNextCancerMedical(): Long {

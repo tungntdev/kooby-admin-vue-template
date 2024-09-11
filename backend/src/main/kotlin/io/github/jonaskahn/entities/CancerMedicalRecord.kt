@@ -1,7 +1,5 @@
 package io.github.jonaskahn.entities
 
-import io.github.jonaskahn.entities.converter.StatusConverter
-import io.github.jonaskahn.entities.enums.Status
 import jakarta.persistence.*
 import jakarta.validation.constraints.Size
 import org.hibernate.annotations.ColumnDefault
@@ -59,7 +57,6 @@ open class CancerMedicalRecord : BaseEntity() {
     open var diagnose: String? = null
 
     @ColumnDefault("1")
-    @Column(name = "status", nullable = false)
-    @Convert(converter = StatusConverter::class)
-    open var status: Status? = Status.ACTIVATED
+    @Column(name = "status")
+    open var status: Int? = null
 }
