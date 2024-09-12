@@ -27,8 +27,8 @@ internal class UserServiceImpl @Inject constructor(
             statuses,
             listOf(),
             pageNo,
-            { status, _ -> userRepository.countByKeywordAndStatus(keyword, status) },
-            { status, _, offset -> userRepository.searchByKeywordAndStatusAndOffset(keyword, status, offset) }
+            { statuses, _ -> userRepository.countByKeywordAndStatus(keyword, statuses) },
+            { statuses, _, offset -> userRepository.searchByKeywordAndStatusAndOffset(keyword, statuses, offset) }
         )
     }
 

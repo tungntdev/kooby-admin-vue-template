@@ -13,7 +13,7 @@ import jakarta.persistence.EntityManager
 
 class PatientRequestRepositoryImpl @Inject constructor(
     override val entityManager: EntityManager
-): AbstractBaseRepository(entityManager) , PatientRequestRepository {
+) : AbstractBaseRepository(entityManager), PatientRequestRepository {
     override fun create(entity: PatientRequest) {
         entityManager.persist(entity)
     }
@@ -30,7 +30,10 @@ class PatientRequestRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun countByKeywordAndState(keyword: String?, state: Collection<Int>): Long {
+    override fun countByKeywordAndState(
+        keyword: String?,
+        state: Collection<io.github.jonaskahn.entities.enums.State>
+    ): Long {
         val likeKeyword = "${keyword?.trim()}%"
         val countQueryStr = """
             SELECT COUNT(pr) FROM PatientRequest pr
@@ -49,7 +52,7 @@ class PatientRequestRepositoryImpl @Inject constructor(
 
     override fun searchByKeywordAndStateAndOffset(
         keyword: String?,
-        state: Collection<Int>,
+        state: Collection<io.github.jonaskahn.entities.enums.State>,
         offset: Long
     ): Collection<PatientRequestDto> {
         val likeKeyword = "${keyword?.trim()}%"

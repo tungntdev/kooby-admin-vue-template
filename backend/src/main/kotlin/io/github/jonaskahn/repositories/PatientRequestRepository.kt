@@ -2,6 +2,7 @@ package io.github.jonaskahn.repositories
 
 import com.google.inject.ImplementedBy
 import io.github.jonaskahn.entities.PatientRequest
+import io.github.jonaskahn.entities.enums.State
 import io.github.jonaskahn.repositories.impl.PatientRequestRepositoryImpl
 import io.github.jonaskahn.services.patientrequest.PatientRequestDto
 
@@ -13,7 +14,11 @@ interface PatientRequestRepository {
 
     fun delete(id: Long)
 
-    fun countByKeywordAndState(keyword: String?, state: Collection<Int>): Long
+    fun countByKeywordAndState(keyword: String?, state: Collection<State>): Long
 
-    fun searchByKeywordAndStateAndOffset(keyword: String?, state: Collection<Int>, offset: Long): Collection<PatientRequestDto>
+    fun searchByKeywordAndStateAndOffset(
+        keyword: String?,
+        state: Collection<State>,
+        offset: Long
+    ): Collection<PatientRequestDto>
 }

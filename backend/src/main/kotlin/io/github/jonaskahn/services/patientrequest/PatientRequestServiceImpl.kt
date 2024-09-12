@@ -10,7 +10,7 @@ import jakarta.inject.Inject
 
 internal class PatientRequestServiceImpl @Inject constructor(
     private val patientRequestRepository: PatientRequestRepository,
-): PatientRequestService, PagingService() {
+) : PatientRequestService, PagingService() {
     override fun createRequest(request: PatientRequestForm) {
         val newRequest = PatientRequest().apply {
             numberOrder = request.numberOrder
@@ -41,30 +41,30 @@ internal class PatientRequestServiceImpl @Inject constructor(
 
 
     override fun updateRequest(request: PatientRequestForm) {
-        val existingRequest = PatientRequest().apply  {
-                id = request.id
-                numberOrder = request.numberOrder ?: numberOrder
-                patientNumber = request.patientNumber ?: patientNumber
-                medicineCode = request.medicineCode ?: medicineCode
-                patientName = request.patientName ?: patientName
-                department = request.department ?: department
-                saveNumber = request.saveNumber ?: saveNumber
-                inDate = request.inDate ?: inDate
-                outDate = request.outDate ?: outDate
-                receptionDate = request.receptionDate ?: receptionDate
-                appointmentPatientDate = request.appointmentPatientDate ?: appointmentPatientDate
-                copyQuantity = request.copyQuantity ?: copyQuantity
-                copyCost = request.copyCost ?: copyCost
-                note = request.note ?: note
-                isDelivery = request.isDelivery ?: isDelivery
-                deliveryOrderNumber = request.deliveryOrderNumber ?: deliveryOrderNumber
-                deliveryYearOfOrder = request.deliveryYearOfOrder ?: deliveryYearOfOrder
-                deliveryAddress = request.deliveryAddress ?: deliveryAddress
-                deliveryPhone = request.deliveryPhone ?: deliveryPhone
-                idProvince = request.idProvince ?: idProvince
-                idDistrict = request.idDistrict ?: idDistrict
-                deliveryCost = request.deliveryCost ?: deliveryCost
-            }
+        val existingRequest = PatientRequest().apply {
+            id = request.id
+            numberOrder = request.numberOrder ?: numberOrder
+            patientNumber = request.patientNumber ?: patientNumber
+            medicineCode = request.medicineCode ?: medicineCode
+            patientName = request.patientName ?: patientName
+            department = request.department ?: department
+            saveNumber = request.saveNumber ?: saveNumber
+            inDate = request.inDate ?: inDate
+            outDate = request.outDate ?: outDate
+            receptionDate = request.receptionDate ?: receptionDate
+            appointmentPatientDate = request.appointmentPatientDate ?: appointmentPatientDate
+            copyQuantity = request.copyQuantity ?: copyQuantity
+            copyCost = request.copyCost ?: copyCost
+            note = request.note ?: note
+            isDelivery = request.isDelivery ?: isDelivery
+            deliveryOrderNumber = request.deliveryOrderNumber ?: deliveryOrderNumber
+            deliveryYearOfOrder = request.deliveryYearOfOrder ?: deliveryYearOfOrder
+            deliveryAddress = request.deliveryAddress ?: deliveryAddress
+            deliveryPhone = request.deliveryPhone ?: deliveryPhone
+            idProvince = request.idProvince ?: idProvince
+            idDistrict = request.idDistrict ?: idDistrict
+            deliveryCost = request.deliveryCost ?: deliveryCost
+        }
         patientRequestRepository.update(existingRequest)
     }
 
@@ -82,8 +82,8 @@ internal class PatientRequestServiceImpl @Inject constructor(
             listOf(),
             states,
             pageNo,
-            {_, state -> patientRequestRepository.countByKeywordAndState(keyword, state)},
-            {_, state, offset -> patientRequestRepository.searchByKeywordAndStateAndOffset(keyword, state, offset)}
+            { _, states -> patientRequestRepository.countByKeywordAndState(keyword, states) },
+            { _, states, offset -> patientRequestRepository.searchByKeywordAndStateAndOffset(keyword, states, offset) }
 
         )
     }

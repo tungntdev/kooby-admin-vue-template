@@ -5,9 +5,7 @@ import io.github.jonaskahn.constants.Roles
 import io.github.jonaskahn.middlewares.role.AccessVerifier
 import io.github.jonaskahn.services.storage.CancerMedicalRecordDto
 import io.github.jonaskahn.services.storage.StorageService
-import io.jooby.annotation.POST
-import io.jooby.annotation.Path
-import io.jooby.annotation.PathParam
+import io.jooby.annotation.*
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.inject.Inject
 
@@ -23,7 +21,7 @@ class StorageController @Inject constructor(
         return storageService.create(request)
     }
 
-    @POST("/storage/update/{id}")
+    @PUT("/storage/update/{id}")
     fun updateStorage(@PathParam("id") id: Int, request: CancerMedicalRecordRequest) {
         accessVerifier.requireRole((Roles.MANAGER))
         return storageService.update(id, request)
@@ -33,5 +31,17 @@ class StorageController @Inject constructor(
     fun searchStorage(request: SearchStorageForm): PageData<CancerMedicalRecordDto> {
         accessVerifier.requireRole((Roles.MANAGER))
         return storageService.search(request.keyword, request.statuses, request.pageNo)
+    }
+
+    @DELETE("/storage/delete/{id}")
+    fun deleteStorage(@PathParam("id") id: Long) {
+        accessVerifier.requireRole((Roles.MANAGER))
+        return storageService.delete(id)
+    }
+
+    @POST("/storage/find-next-save-number")
+    fun findNextSaveNumber(@QueryParam("department") department: String): Long {
+        accessVerifier.requireRole((Roles.MANAGER))
+        return storageService.findNextSaveNumber(department)
     }
 }

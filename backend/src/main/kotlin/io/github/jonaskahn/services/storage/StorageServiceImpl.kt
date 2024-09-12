@@ -22,7 +22,7 @@ internal class StorageServiceImpl @Inject constructor(
     }
 
     override fun delete(id: Long) {
-        TODO("Not yet implemented")
+        cancerMedicalRecordRepository.delete(id)
     }
 
     override fun search(
@@ -43,5 +43,9 @@ internal class StorageServiceImpl @Inject constructor(
                 )
             }
         )
+    }
+
+    override fun findNextSaveNumber(department: String): Long {
+        return cancerMedicalRecordRepository.findNextCancerMedical(department)
     }
 }

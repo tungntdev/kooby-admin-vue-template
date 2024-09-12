@@ -16,4 +16,6 @@ interface StorageService {
         statuses: Collection<Status> = listOf(Status.ACTIVATED),
         pageNo: Long = 0L,
     ): PageData<CancerMedicalRecordDto>
+
+    fun findNextSaveNumber(department: String): Long
 }

@@ -38,7 +38,7 @@ class DeathRecordRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Int>): Long {
+    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Status>): Long {
         val likeKeyword = "%${keyword?.trim()}%"
         val countQueryStr = """
         SELECT COUNT(dr) FROM DeathRecord dr
@@ -55,7 +55,7 @@ class DeathRecordRepositoryImpl @Inject constructor(
 
     override fun searchByKeywordAndStatusAndOffset(
         keyword: String?,
-        status: Collection<Int>,
+        status: Collection<Status>,
         offset: Long
     ): Collection<DeathRecord> {
         val likeKeyword = "%${keyword?.trim()}%"

@@ -9,6 +9,8 @@ import io.github.jonaskahn.services.storage.CancerMedicalRecordDto
 import io.github.jonaskahn.services.storage.CancerMedicalRecordMapper
 import jakarta.inject.Inject
 import jakarta.persistence.EntityManager
+import java.time.Instant
+import java.time.ZoneId
 
 class CancerMedicalRecordRepositoryImpl @Inject constructor(
     override val entityManager: EntityManager
@@ -24,8 +26,6 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
     override fun update(cancerMedicalRecord: CancerMedicalRecord) {
         val exitingRecord = entityManager.find(CancerMedicalRecord::class.java, cancerMedicalRecord.id)
 
-//        cancerMedicalRecord.updatedAt = Instant.now()
-//        cancerMedicalRecord.updatedBy = UserContextHolder.getCurrentUserId()
         cancerMedicalRecord.status = exitingRecord.status
         cancerMedicalRecord.createdAt = exitingRecord.createdAt
         cancerMedicalRecord.createdBy = exitingRecord.createdBy
@@ -34,15 +34,19 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
     }
 
     override fun delete(id: Long) {
-        TODO("Not yet implemented")
+        val entity = entityManager.find(CancerMedicalRecord::class.java, id)
+        if (entity != null) {
+            entity.status = Status.DELETED
+            entityManager.merge(entity)
+        }
     }
 
-    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Int>): Long {
+    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Status>): Long {
         val likeKeyword = "%${keyword?.trim()}%"
         val countQueryStr = """
         SELECT COUNT(cmr) FROM  CancerMedicalRecord  cmr
         WHERE cmr.patientName like :keyword
-        AND cmr.status in (:status)
+        AND cmr.status in :status
     """
         val countQuery = entityManager.createQuery(countQueryStr, Long::class.java)
         countQuery.setParameter("keyword", likeKeyword)
@@ -53,7 +57,7 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
 
     override fun searchByKeywordAndStatusAndOffset(
         keyword: String?,
-        status: Collection<Int>,
+        status: Collection<Status>,
         offset: Long
     ): List<CancerMedicalRecordDto> {
         val likeKeyword = "%${keyword?.trim()}%"
@@ -73,7 +77,19 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
         return CancerMedicalRecordMapper.INSTANCE.cancerRecordsToDtos(res)
     }
 
-    override fun findNextCancerMedical(): Long {
-        TODO("Not yet implemented")
+    override fun findNextCancerMedical(department: String): Long {
+        val countQueryStr = """
+        SELECT COUNT(cmd) FROM CancerMedicalRecord cmd
+        WHERE YEAR(cmd.saveYear) = :currentYear
+        AND cmd.department = :department
+        AND cmd.status = :status
+    """
+
+        val countQuery = entityManager.createQuery(countQueryStr, Long::class.java)
+        countQuery.setParameter("currentYear", Instant.now().atZone(ZoneId.systemDefault()).year)
+        countQuery.setParameter("department", department)
+        countQuery.setParameter("status", Status.ACTIVATED)
+        val result = countQuery.singleResult
+        return result + 1
     }
 }

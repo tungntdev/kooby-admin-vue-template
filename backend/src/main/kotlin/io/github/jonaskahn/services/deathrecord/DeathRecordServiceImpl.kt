@@ -36,8 +36,8 @@ class DeathRecordServiceImpl @Inject constructor(
             statuses,
             listOf(),
             pageNo,
-            { status, _ -> repository.countByKeywordAndStatus(keyword, status) },
-            { status, _, offset -> repository.searchByKeywordAndStatusAndOffset(keyword, status, offset) }
+            { statuses, _ -> repository.countByKeywordAndStatus(keyword, statuses) },
+            { statuses, _, offset -> repository.searchByKeywordAndStatusAndOffset(keyword, statuses, offset) }
         )
     }
 

@@ -14,7 +14,7 @@ class UserRepositoryImpl @Inject constructor(
     override val entityManager: EntityManager
 ) : AbstractBaseRepository(entityManager), UserRepository {
     override fun create(user: User): User {
-       entityManager.persist(user)
+        entityManager.persist(user)
         return user
     }
 
@@ -75,7 +75,7 @@ class UserRepositoryImpl @Inject constructor(
             .getSingleResult()
     }
 
-    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Int>): Long {
+    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Status>): Long {
         return count(true, "select count(1) from users u where 1 = 1 ") { builder, params ->
             queryBuilderByKeywordAndStatus(keyword, builder, params, status)
         }
@@ -85,7 +85,7 @@ class UserRepositoryImpl @Inject constructor(
         keyword: String?,
         builder: StringBuilder,
         params: MutableMap<String, Any>,
-        status: Collection<Int>
+        status: Collection<Status>
     ) {
         if (StringUtils.isNotBlank(keyword)) {
             builder.append(" AND (u.username like %:keyword% or u.email like %:keyword%)")
@@ -99,7 +99,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun searchByKeywordAndStatusAndOffset(
         keyword: String?,
-        status: Collection<Int>,
+        status: Collection<Status>,
         offset: Long
     ): Collection<UserDto> {
         return search(true, "select * from users u where 1 = 1 ", UserDto::class.java) { builder, params ->
