@@ -15,7 +15,7 @@ interface CancerMedicalRecordRepository {
         keyword: String?,
         status: Collection<Int>,
         offset: Long
-    ): Collection<CancerMedicalRecordDto>
+    ): List<CancerMedicalRecordDto>
 
     fun findNextCancerMedical(): Long
 

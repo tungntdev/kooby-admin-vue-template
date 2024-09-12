@@ -16,7 +16,7 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
     override fun create(cancerMedicalRecord: CancerMedicalRecord) {
 //        cancerMedicalRecord.createdAt = Instant.now()
 //        cancerMedicalRecord.createdBy = UserContextHolder.getCurrentUserId()
-        cancerMedicalRecord.status = Status.Code.ACTIVATED
+        cancerMedicalRecord.status = Status.ACTIVATED
 
         entityManager.persist(cancerMedicalRecord)
     }
@@ -42,7 +42,7 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
         val countQueryStr = """
         SELECT COUNT(cmr) FROM  CancerMedicalRecord  cmr
         WHERE cmr.patientName like :keyword
-        AND cmr.status in :status
+        AND cmr.status in (:status)
     """
         val countQuery = entityManager.createQuery(countQueryStr, Long::class.java)
         countQuery.setParameter("keyword", likeKeyword)
@@ -55,12 +55,12 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
         keyword: String?,
         status: Collection<Int>,
         offset: Long
-    ): Collection<CancerMedicalRecordDto> {
+    ): List<CancerMedicalRecordDto> {
         val likeKeyword = "%${keyword?.trim()}%"
         val queryStr = """
         SELECT cmr FROM CancerMedicalRecord cmr
         WHERE cmr.patientName like :keyword
-        AND cmr.status in :status
+        AND cmr.status in (:status)
             ORDER BY cmr.id DESC
     """
 
@@ -69,7 +69,8 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
         query.setParameter("status", status)
         query.firstResult = offset.toInt()
         query.maxResults = Defaults.Pageable.DEFAULT_PAGE_SIZE
-        return CancerMedicalRecordMapper.INSTANCE.cancerRecordsToDtos(query.resultList)
+        val res = query.resultList
+        return CancerMedicalRecordMapper.INSTANCE.cancerRecordsToDtos(res)
     }
 
     override fun findNextCancerMedical(): Long {
