@@ -41,55 +41,66 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Status>): Long {
-        val likeKeyword = "%${keyword?.trim()}%"
-        val countQueryStr = """
-        SELECT COUNT(cmr) FROM  CancerMedicalRecord  cmr
-        WHERE cmr.patientName like :keyword
-        AND cmr.status in :status
-    """
-        val countQuery = entityManager.createQuery(countQueryStr, Long::class.java)
-        countQuery.setParameter("keyword", likeKeyword)
-        countQuery.setParameter("status", status)
-        val result = countQuery.singleResult
-        return result
-    }
-
     override fun searchByKeywordAndStatusAndOffset(
         keyword: String?,
+        department: String?,
         status: Collection<Status>,
         offset: Long
     ): List<CancerMedicalRecordDto> {
         val likeKeyword = "%${keyword?.trim()}%"
+        val hasDepartment = !department.isNullOrBlank()
+
         val queryStr = """
         SELECT cmr FROM CancerMedicalRecord cmr
-        WHERE cmr.patientName like :keyword
-        AND cmr.status in (:status)
-            ORDER BY cmr.id DESC
+        WHERE cmr.patientName LIKE :keyword
+        ${if (hasDepartment) "AND cmr.department = :department" else ""}
+        AND cmr.status IN (:status)
+        ORDER BY cmr.id DESC
     """
 
-        val query = entityManager.createQuery(queryStr, CancerMedicalRecord::class.java)
-        query.setParameter("keyword", likeKeyword)
-        query.setParameter("status", status)
-        query.firstResult = offset.toInt()
-        query.maxResults = Defaults.Pageable.DEFAULT_PAGE_SIZE
-        val res = query.resultList
-        return CancerMedicalRecordMapper.INSTANCE.cancerRecordsToDtos(res)
+        val query = entityManager.createQuery(queryStr, CancerMedicalRecord::class.java).apply {
+            setParameter("keyword", likeKeyword)
+            setParameter("status", status)
+            if (hasDepartment) setParameter("department", department)
+            firstResult = offset.toInt()
+            maxResults = Defaults.Pageable.DEFAULT_PAGE_SIZE
+        }
+
+        return CancerMedicalRecordMapper.INSTANCE.cancerRecordsToDtos(query.resultList)
     }
+
+
+    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Status>, department: String?): Long {
+        val likeKeyword = "%${keyword?.trim()}%"
+        val hasDepartment = !department.isNullOrEmpty()
+
+        val countQueryStr = """
+        SELECT COUNT(cmr) FROM CancerMedicalRecord cmr
+        WHERE cmr.patientName LIKE :keyword
+        ${if (hasDepartment) "AND cmr.department = :department" else ""}
+        AND cmr.status IN :status
+    """
+
+        return entityManager.createQuery(countQueryStr, Long::class.java).apply {
+            setParameter("keyword", likeKeyword)
+            setParameter("status", status)
+            if (hasDepartment) setParameter("department", department)
+        }.singleResult
+    }
+
 
     override fun findNextCancerMedical(department: String): Long {
         val countQueryStr = """
-        SELECT COUNT(cmd) FROM CancerMedicalRecord cmd
-        WHERE YEAR(cmd.saveYear) = :currentYear
-        AND cmd.department = :department
-        AND cmd.status = :status
+        SELECT COUNT(cmr) FROM  CancerMedicalRecord  cmr
+        WHERE  cmr.status = :status
+        AND cmr.department = :department
+        AND cmr.saveYear = :year
     """
-
         val countQuery = entityManager.createQuery(countQueryStr, Long::class.java)
-        countQuery.setParameter("currentYear", Instant.now().atZone(ZoneId.systemDefault()).year)
-        countQuery.setParameter("department", department)
         countQuery.setParameter("status", Status.ACTIVATED)
+        countQuery.setParameter("department", department)
+        countQuery.setParameter("year", Instant.now().atZone(ZoneId.systemDefault()).year)
         val result = countQuery.singleResult
-        return result + 1
+        return result
     }
 }

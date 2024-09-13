@@ -52,7 +52,6 @@ function truncateString(str, maxLength = 40) {
 }
 
 const changePage = async () => {
-    console.debug('=CurrentItems: ' + currentItems.value);
     pageNumber.value = currentItems.value / 10 + 1;
     await fetchDeathNumbers();
 };

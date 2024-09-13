@@ -69,6 +69,15 @@ const PageSpec = {
             },
             component: () => import('@/views/deathnumber/Manager.vue')
         },
+        STORAGE: {
+            path: '/storage/reception',
+            name: 'storage',
+            meta: {
+                title: 'page.menu-title.page.medical-record-storage',
+                permissions: []
+            },
+            component: () => import('@/views/storage/Manager.vue')
+        },
         PAGE: {
             FORM_LAYOUT: {
                 path: '/uikit/formlayout',

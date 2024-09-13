@@ -30,7 +30,7 @@ class StorageController @Inject constructor(
     @POST("/storage/search")
     fun searchStorage(request: SearchStorageForm): PageData<CancerMedicalRecordDto> {
         accessVerifier.requireRole((Roles.MANAGER))
-        return storageService.search(request.keyword, request.statuses, request.pageNo)
+        return storageService.search(request.keyword, request.department, request.statuses, request.pageNo)
     }
 
     @DELETE("/storage/delete/{id}")
@@ -40,8 +40,8 @@ class StorageController @Inject constructor(
     }
 
     @POST("/storage/find-next-save-number")
-    fun findNextSaveNumber(@QueryParam("department") department: String): Long {
+    fun findNextSaveNumber(request: DepartmentRequest): Long {
         accessVerifier.requireRole((Roles.MANAGER))
-        return storageService.findNextSaveNumber(department)
+        return storageService.findNextSaveNumber(request.department ?: "")
     }
 }

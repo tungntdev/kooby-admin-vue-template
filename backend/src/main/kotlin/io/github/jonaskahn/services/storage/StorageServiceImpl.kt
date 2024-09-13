@@ -27,6 +27,7 @@ internal class StorageServiceImpl @Inject constructor(
 
     override fun search(
         keyword: String?,
+        department: String?,
         statuses: Collection<Status>,
         pageNo: Long
     ): PageData<CancerMedicalRecordDto> {
@@ -34,12 +35,13 @@ internal class StorageServiceImpl @Inject constructor(
             statuses,
             listOf(),
             pageNo,
-            { status, _ -> cancerMedicalRecordRepository.countByKeywordAndStatus(keyword, status) },
+            { status, _ -> cancerMedicalRecordRepository.countByKeywordAndStatus(keyword, status, department) },
             { status, _, offset ->
                 cancerMedicalRecordRepository.searchByKeywordAndStatusAndOffset(
                     keyword,
+                    department,
                     status,
-                    offset
+                    offset,
                 )
             }
         )

@@ -5,6 +5,8 @@ import Patient_request from '@/locales/vi/views/patient_request';
 import Death_number_manager from '@/locales/vi/views/death_number_manager';
 import Death_number_form_component from '@/locales/vi/views/death_number_form_component';
 import Death_number_confirm_delete from '@/locales/vi/views/death_number_confirm_delete';
+import Storage_manager from '@/locales/vi/views/storage_manager';
+import Confirm_delete from '@/locales/vi/global/confirm_delete';
 
 export default {
     'service.default-message.unknown-error': 'Đã có sự cố xảy ra. Vui lòng thử lại sau.',
@@ -24,5 +26,7 @@ export default {
     ...Patient_request,
     ...Death_number_manager,
     ...Death_number_form_component,
-    ...Death_number_confirm_delete
+    ...Death_number_confirm_delete,
+    ...Storage_manager,
+    ...Confirm_delete
 };

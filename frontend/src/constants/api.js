@@ -13,6 +13,14 @@ const API = {
         UPDATE: '/secure/death-records/update',
         DELETE: '/secure/death-records/delete/',
         GET_NUMBER: '/secure/death-records/number'
+    },
+
+    STORAGE: {
+        SEARCH: '/secure/storage/search',
+        CREATE: '/secure/storage/create',
+        UPDATE: '/secure/storage/update/',
+        DELETE: '/secure/storage/delete/',
+        GET_NUMBER: '/secure/storage/find-next-save-number'
     }
 };
 

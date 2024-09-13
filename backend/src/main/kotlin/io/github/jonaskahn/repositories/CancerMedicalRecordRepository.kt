@@ -11,9 +11,10 @@ interface CancerMedicalRecordRepository {
     fun create(cancerMedicalRecord: CancerMedicalRecord)
     fun update(cancerMedicalRecord: CancerMedicalRecord)
     fun delete(id: Long)
-    fun countByKeywordAndStatus(keyword: String?, status: Collection<Status>): Long
+    fun countByKeywordAndStatus(keyword: String?, status: Collection<Status>, department: String?): Long
     fun searchByKeywordAndStatusAndOffset(
         keyword: String?,
+        department: String?,
         status: Collection<Status>,
         offset: Long
     ): List<CancerMedicalRecordDto>

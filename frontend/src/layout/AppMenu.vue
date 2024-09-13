@@ -73,7 +73,7 @@ const model = ref([
             {
                 label: 'page.menu-bar.medical-record-storage.storage-number',
                 icon: 'pi pi-fw pi-server',
-                to: '/patient/reception'
+                to: '/storage/reception'
             }
         ]
     }
