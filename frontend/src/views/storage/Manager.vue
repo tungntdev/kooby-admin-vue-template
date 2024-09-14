@@ -4,6 +4,8 @@ import { inject, onBeforeMount, ref } from 'vue';
 import Common from '@/constants/common';
 import SETTINGS from '@/constants/settings';
 import ConfirmDelete from '@/views/storage/ConfirmDelete.vue';
+import Create from '@/views/storage/Create.vue';
+import Edit from '@/views/storage/Edit.vue';
 
 const storageService = StorageService.INSTANCE;
 
@@ -21,9 +23,9 @@ const departments = ref([
     { name: 'A6-A', key: 'A6-A' },
     { name: 'A6-B', key: 'A6-B' },
     { name: 'A6-D', key: 'A6-D' },
+    { name: 'A18', key: 'A18' },
     { name: 'A6-C', key: 'A6-C' },
-    { name: 'A15', key: 'A15' },
-    { name: 'A18', key: 'A18' }
+    { name: 'A15', key: 'A15' }
 ]);
 
 async function fetchData() {
@@ -88,6 +90,21 @@ function onClickDelete(id) {
     deleteRef.value.idStorage = id;
     deleteRef.value.confirmDelete();
 }
+
+const createRef = ref();
+
+async function onClickNew() {
+    createRef.value.visible = true;
+}
+
+const editRef = ref();
+const dataEdit = ref();
+
+function onClickEdit(record) {
+    editRef.value.visible = true;
+    dataEdit.value = record;
+    console.debug(record);
+}
 </script>
 
 <template>
@@ -115,7 +132,7 @@ function onClickDelete(id) {
                     <Button type="button" :label="$tt('storage_manager.button.search')" icon="pi pi-search" severity="success" @click="fetchData" />
                 </template>
             </Toolbar>
-            <DataTable :value="storages" scrollable scrollHeight="500px" tableStyle="min-width: 40rem">
+            <DataTable :value="storages" scrollable scrollHeight="580px" tableStyle="min-width: 40rem">
                 <template #header>
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xl font-bold">{{ $tt('storage_manager.table.title') }}</span>
@@ -147,7 +164,7 @@ function onClickDelete(id) {
                 <Column :header="$tt('storage_manager.table.actions')" style="min-width: 50px">
                     <template #body="{ data }">
                         <div class="flex flex-row">
-                            <Button icon="pi pi-pencil" outlined rounded severity="secondary" class="mr-2" @click="" />
+                            <Button icon="pi pi-pencil" outlined rounded severity="secondary" class="mr-2" @click="onClickEdit(data)" />
                             <Button icon="pi pi-trash" outlined rounded severity="danger" @click="onClickDelete(data.id)" />
                         </div>
                     </template>
@@ -159,6 +176,8 @@ function onClickDelete(id) {
             </Paginator>
         </div>
         <confirm-delete ref="deleteRef" @callFetchStorages="fetchData"></confirm-delete>
+        <create ref="createRef" @callFetchStorages="fetchData" />
+        <edit ref="editRef" :dataEdit="dataEdit" @callFetchStorages="fetchData" />
     </div>
 </template>
 

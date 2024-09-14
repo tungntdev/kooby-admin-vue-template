@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, inject, onBeforeMount, ref, watch } from 'vue';
+import { defineEmits, inject, ref } from 'vue';
 import FormComponent from '@/views/deathnumber/FormComponent.vue';
 import DeathNumberService from '@/service/DeathNumberService';
 import SETTINGS from '@/constants/settings';
@@ -39,8 +39,8 @@ async function onClickSave() {
                 <form-component ref="formComponentRef" :nextNumber="props.nextNumber"></form-component>
                 <div class="flex flex-col justify-end md:flex-row gap-8">
                     <div class="flex flex-row gap-2">
-                        <Button type="button" :label="$tt('death-number-form-component.button.cancel')" severity="secondary" @click="visible = false"></Button>
-                        <Button type="button" :label="$tt('death-number-form-component.button.save')" @click="onClickSave"></Button>
+                        <Button type="button" icon="pi pi-times-circle" :label="$tt('death-number-form-component.button.cancel')" severity="secondary" @click="visible = false"></Button>
+                        <Button type="button" icon="pi pi-save" :label="$tt('death-number-form-component.button.save')" @click="onClickSave"></Button>
                     </div>
                 </div>
             </div>

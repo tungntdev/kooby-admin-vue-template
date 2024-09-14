@@ -7,6 +7,7 @@ import Death_number_form_component from '@/locales/vi/views/death_number_form_co
 import Death_number_confirm_delete from '@/locales/vi/views/death_number_confirm_delete';
 import Storage_manager from '@/locales/vi/views/storage_manager';
 import Confirm_delete from '@/locales/vi/global/confirm_delete';
+import Storage_component from '@/locales/vi/views/storage_component';
 
 export default {
     'service.default-message.unknown-error': 'Đã có sự cố xảy ra. Vui lòng thử lại sau.',
@@ -28,5 +29,6 @@ export default {
     ...Death_number_form_component,
     ...Death_number_confirm_delete,
     ...Storage_manager,
-    ...Confirm_delete
+    ...Confirm_delete,
+    ...Storage_component
 };

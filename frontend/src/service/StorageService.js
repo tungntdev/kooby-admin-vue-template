@@ -13,7 +13,7 @@ export default class StorageService extends BaseService {
             },
             {
                 secure: true,
-                notifyOnSuccess: true,
+                notifyOnSuccess: false,
                 notifyOnError: true
             }
         );
@@ -37,7 +37,7 @@ export default class StorageService extends BaseService {
     async update(params) {
         return await this.request(
             {
-                path: API.STORAGE.UPDATE + id,
+                path: API.STORAGE.UPDATE + params.id,
                 method: 'PUT',
                 data: params
             },

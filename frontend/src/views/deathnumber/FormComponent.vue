@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, reactive, ref, watch } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 import { useCommonStore } from '@/store/commonStore';
 import { storeToRefs } from 'pinia';
 import DeathNumberService from '@/service/DeathNumberService';
@@ -78,7 +78,6 @@ const { departments } = storeToRefs(commonStore);
 
 onBeforeMount(async () => {
     await commonStore.loadDepartments();
-    console.debug(departments);
 });
 
 defineExpose({ dataInput, validation, checkValidation });
@@ -123,7 +122,7 @@ defineExpose({ dataInput, validation, checkValidation });
         <div class="grid grid-cols-12 gap-8">
             <div class="flex flex-wrap col-span-3 gap-2 w-full">
                 <label for="sex">{{ $tt('death-number-form-component.label.sex') }}<span class="text-red-500">*</span></label>
-                <Dropdown id="sex" v-model="dataInput.sex"  @change="resetValidation('sex')" :class="{ 'p-invalid': validation.sex !== null && !validation.sex }" :options="sexList" editable option-value="name" optionLabel="name"></Dropdown>
+                <Dropdown id="sex" v-model="dataInput.sex" @change="resetValidation('sex')" :class="{ 'p-invalid': validation.sex !== null && !validation.sex }" :options="sexList" editable option-value="name" optionLabel="name"></Dropdown>
                 <small v-if="validation.sex !== null && !validation.sex" class="p-error">{{ $tt('death-number-form-component.label.error-input') }}</small>
             </div>
             <div class="flex flex-wrap col-span-3 gap-2 w-full">
