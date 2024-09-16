@@ -2,8 +2,8 @@ package io.github.jonaskahn.entities
 
 import io.github.jonaskahn.entities.converter.StateConverter
 import io.github.jonaskahn.entities.converter.StatusConverter
-import io.github.jonaskahn.entities.enums.Status
 import io.github.jonaskahn.entities.enums.State
+import io.github.jonaskahn.entities.enums.Status
 import jakarta.persistence.*
 import jakarta.validation.constraints.Size
 import org.hibernate.annotations.ColumnDefault
@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 @Entity
 @Table(name = "patient_request")
-open class PatientRequest: BaseEntity() {
+open class PatientRequest : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -80,10 +80,6 @@ open class PatientRequest: BaseEntity() {
     @Convert(converter = StatusConverter::class)
     open var status: Status? = Status.ACTIVATED
 
-    @ColumnDefault("0")
-    @Column(name = "is_delivery")
-    open var isDelivery: Int? = null
-
     @Column(name = "delivery_order_number")
     open var deliveryOrderNumber: Int? = null
 
@@ -109,4 +105,8 @@ open class PatientRequest: BaseEntity() {
 
     @Column(name = "delivery_date")
     open var deliveryDate: Instant? = null
+
+    @ColumnDefault("0")
+    @Column(name = "delivery")
+    open var delivery: Int? = null
 }

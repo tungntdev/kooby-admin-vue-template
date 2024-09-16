@@ -21,4 +21,8 @@ interface PatientRequestRepository {
         state: Collection<State>,
         offset: Long
     ): Collection<PatientRequestDto>
+
+    fun findNextPatientOrder(): Long
+
+    fun findNextPatientDeliveryNumber(): Long
 }

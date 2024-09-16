@@ -34,7 +34,7 @@ class DeathRecordController @Inject constructor(
         return service.delete(deathRecordId)
     }
 
-    @POST("/death-records/searchRecord")
+    @POST("/death-records/search-record")
     fun search(request: SearchForm): PageData<DeathRecord> {
         accessVerifier.requireRole(Roles.DOCUMENT_ISSUER)
         return service.searchRecord(request.keyword, request.status, request.pageNo)

@@ -5,17 +5,16 @@ import io.github.jonaskahn.entities.enums.Status
 import jakarta.persistence.*
 import jakarta.validation.constraints.Size
 import org.hibernate.annotations.ColumnDefault
-import java.time.Instant
 
 @Entity
 @Table(name = "district")
-open class District: BaseEntity() {
+open class District : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     open var id: Int? = null
 
-    @JoinColumn(name = "id_province")
+    @Column(name = "id_province")
     open var idProvince: Int? = null
 
     @Size(max = 255)

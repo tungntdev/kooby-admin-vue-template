@@ -17,27 +17,39 @@ class PatientRequestController @Inject constructor(
     private val accessVerifier: AccessVerifier
 ) {
 
-    @POST("/patientRequest/create")
+    @POST("/patient-request/create")
     fun createNewRequest(request: PatientRequestForm) {
         accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
         return patientRequestService.createRequest(request)
     }
 
-    @PUT("/patientRequest/update")
+    @PUT("/patient-request/update")
     fun updatePatientRequest(request: PatientRequestForm) {
         accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
         return patientRequestService.updateRequest(request)
     }
 
-    @DELETE("/patientRequest/delete/{id}")
+    @DELETE("/patient-request/delete/{id}")
     fun deletePatientRequest(@PathParam("id") id: Int) {
         accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
         return patientRequestService.deleteRequest(id)
     }
 
-    @POST("/patientRequest/searchRecord")
+    @POST("/patient-request/search")
     fun searchPatientRequest(request: SearchRequestForm): PageData<PatientRequestDto> {
         accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
         return patientRequestService.search(request.keyword, request.states, request.pageNo)
+    }
+
+    @GET("/patient-request/next-order")
+    fun getNextPatientOrder(): Long {
+        accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
+        return patientRequestService.findNextPatientOrder()
+    }
+
+    @GET("/patient-request/next-delivery-order")
+    fun getNextDeliveryOrder(): Long {
+        accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
+        return patientRequestService.findNextPatientDeliveryNumber()
     }
 }

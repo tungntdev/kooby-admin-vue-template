@@ -18,7 +18,7 @@ class DeathRecordRepositoryImpl @Inject constructor(
         deathRecord.receiver = UserContextHolder.getCurrentUserId()
         deathRecord.createdBy = UserContextHolder.getCurrentUserId()
         deathRecord.createdAt = Instant.now()
-        deathRecord.status = Status.Code.ACTIVATED
+        deathRecord.status = Status.ACTIVATED
         entityManager.persist(deathRecord)
     }
 
@@ -31,14 +31,17 @@ class DeathRecordRepositoryImpl @Inject constructor(
     override fun delete(id: Int) {
         val entity = entityManager.find(DeathRecord::class.java, id)
         if (entity != null) {
-            entity.status = Status.Code.DELETED
+            entity.status = Status.DELETED
             entity.updatedBy = UserContextHolder.getCurrentUserId()
             entity.updatedAt = Instant.now()
             entityManager.merge(entity)
         }
     }
 
-    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Status>): Long {
+    override fun countByKeywordAndStatus(
+        keyword: String?,
+        status: Collection<Status>
+    ): Long {
         val likeKeyword = "%${keyword?.trim()}%"
         val countQueryStr = """
         SELECT COUNT(dr) FROM DeathRecord dr
@@ -87,7 +90,7 @@ class DeathRecordRepositoryImpl @Inject constructor(
 
         val countQuery = entityManager.createQuery(countQueryStr, Long::class.javaObjectType)
         countQuery.setParameter("currentYear", Instant.now().atZone(ZoneId.systemDefault()).year)
-        countQuery.setParameter("status", Status.Code.ACTIVATED)
+        countQuery.setParameter("status", Status.ACTIVATED)
         val result = countQuery.singleResult
         return result + 1
     }

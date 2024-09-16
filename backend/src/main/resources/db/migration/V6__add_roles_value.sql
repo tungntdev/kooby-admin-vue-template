@@ -1,0 +1,2 @@
+INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`)
+VALUES (9, 'DOCUMENT_ISSUER', 'Quản lý cấp số', 1, '2024-08-20 12:46:44', NULL, '2024-08-20 12:46:44', NULL);

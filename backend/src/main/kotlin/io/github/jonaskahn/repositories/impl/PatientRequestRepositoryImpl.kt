@@ -3,6 +3,7 @@ package io.github.jonaskahn.repositories.impl
 import io.github.jonaskahn.constants.Defaults
 import io.github.jonaskahn.entities.Assignment
 import io.github.jonaskahn.entities.PatientRequest
+import io.github.jonaskahn.entities.enums.State
 import io.github.jonaskahn.entities.enums.Status
 import io.github.jonaskahn.repositories.AbstractBaseRepository
 import io.github.jonaskahn.repositories.PatientRequestRepository
@@ -10,6 +11,8 @@ import io.github.jonaskahn.services.patientrequest.PatientRequestDto
 import io.github.jonaskahn.services.patientrequest.PatientRequestEntityToDtoMapper
 import jakarta.inject.Inject
 import jakarta.persistence.EntityManager
+import java.time.Instant
+import java.time.ZoneId
 
 class PatientRequestRepositoryImpl @Inject constructor(
     override val entityManager: EntityManager
@@ -32,7 +35,7 @@ class PatientRequestRepositoryImpl @Inject constructor(
 
     override fun countByKeywordAndState(
         keyword: String?,
-        state: Collection<io.github.jonaskahn.entities.enums.State>
+        state: Collection<State>
     ): Long {
         val likeKeyword = "${keyword?.trim()}%"
         val countQueryStr = """
@@ -52,7 +55,7 @@ class PatientRequestRepositoryImpl @Inject constructor(
 
     override fun searchByKeywordAndStateAndOffset(
         keyword: String?,
-        state: Collection<io.github.jonaskahn.entities.enums.State>,
+        state: Collection<State>,
         offset: Long
     ): Collection<PatientRequestDto> {
         val likeKeyword = "${keyword?.trim()}%"
@@ -81,5 +84,31 @@ class PatientRequestRepositoryImpl @Inject constructor(
             val assignment = result[1] as? Assignment
             PatientRequestEntityToDtoMapper.INSTANCE.toDto(patientRequest, assignment)
         }
+    }
+
+    override fun findNextPatientOrder(): Long {
+        val countQueryStr = """
+            SELECT COUNT(pr) FROM PatientRequest pr
+            WHERE YEAR(pr.receptionDate) = :year 
+                AND pr.status = :status
+        """
+        val countQuery = entityManager.createQuery(countQueryStr, Long::class.javaObjectType)
+        countQuery.setParameter("status", Status.ACTIVATED)
+        countQuery.setParameter("year", Instant.now().atZone(ZoneId.systemDefault()).year)
+        return countQuery.singleResult + 1
+    }
+
+    override fun findNextPatientDeliveryNumber(): Long {
+        val countQueryStr = """
+            SELECT COUNT(pr) FROM PatientRequest pr
+            WHERE YEAR(pr.receptionDate) = :year 
+                AND pr.status = :status
+                AND pr.delivery = :delivery
+        """
+        val countQuery = entityManager.createQuery(countQueryStr, Long::class.javaObjectType)
+        countQuery.setParameter("status", Status.ACTIVATED)
+        countQuery.setParameter("delivery", 1)
+        countQuery.setParameter("year", Instant.now().atZone(ZoneId.systemDefault()).year)
+        return countQuery.singleResult + 1
     }
 }

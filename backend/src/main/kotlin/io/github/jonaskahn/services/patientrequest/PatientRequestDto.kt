@@ -1,19 +1,19 @@
 package io.github.jonaskahn.services.patientrequest
 
+import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import io.github.jonaskahn.assistant.jackson.MessageJsonSerializer
 import io.github.jonaskahn.entities.enums.State
 import io.github.jonaskahn.entities.enums.Status
-import jakarta.persistence.Column
-import jakarta.persistence.Lob
-import jakarta.validation.constraints.Size
-import org.hibernate.annotations.ColumnDefault
+import java.io.Serializable
 import java.time.Instant
 import java.time.LocalDate
 
-open class PatientRequestDto {
+open class PatientRequestDto : Serializable {
 
     open var idPatientRequest: Int? = null
+
+    @JsonAlias("number_order")
     open var numberOrder: Int? = null
     open var patientNumber: String? = null
     open var medicineCode: String? = null
@@ -46,11 +46,14 @@ open class PatientRequestDto {
 
     @JsonSerialize(using = MessageJsonSerializer::class)
     open var statusName: String? = null
-    open var isDelivery: Int? = null
+
     open var deliveryOrderNumber: Int? = null
+
+    open var delivery: Int? = null
     open var deliveryYearOfOrder: Int? = null
     open var deliveryAddress: String? = null
     open var deliveryPhone: String? = null
+    open var idProvince: Int? = null
     open var idDistrict: Int? = null
     open var deliveryCost: Int? = null
     open var deliveryDate: Instant? = null

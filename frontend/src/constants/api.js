@@ -4,11 +4,16 @@ const API = {
     },
 
     PATIENT_REQUEST: {
-        SEARCH: '/secure/patientRequest/search'
+        SEARCH: '/secure/patient-request/search',
+        CREATE: '/secure/patient-request/create',
+        UPDATE: '/secure/patient-request/update',
+        DELETE: '/secure/patient-request/delete/',
+        NEXT_PATIENT_ORDER: '/secure/patient-request/next-order',
+        NEXT_DELIVERY_ORDER: '/secure/patient-request/next-delivery-order'
     },
 
     DEATH_RECORD: {
-        SEARCH: '/secure/death-records/searchRecord',
+        SEARCH: '/secure/death-records/search-record',
         CREATE: '/secure/death-records/create',
         UPDATE: '/secure/death-records/update',
         DELETE: '/secure/death-records/delete/',
@@ -21,6 +26,13 @@ const API = {
         UPDATE: '/secure/storage/update/',
         DELETE: '/secure/storage/delete/',
         GET_NUMBER: '/secure/storage/find-next-save-number'
+    },
+
+    COMMON: {
+        LOAD_DEPARTMENTS: '/secure/departments',
+        LOAD_PROVINCES: '/secure/address/province',
+        LOAD_DISTRICTS_BY_PROVINCE: '/secure/address/district/province/',
+        LOAD_DISTRICT_BY_DISTRICT: '/secure/address/district/'
     }
 };
 

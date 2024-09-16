@@ -9,14 +9,14 @@ import java.time.LocalDate
 
 @Entity
 @Table(name = "assignments")
-open class Assignment: BaseEntity() {
+open class Assignment : BaseEntity() {
     @Id
     @Column(name = "id", nullable = false)
     open var id: Int? = null
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_patient_request")
-    open var idPatientRequest: io.github.jonaskahn.entities.PatientRequest? = null
+    open var idPatientRequest: PatientRequest? = null
 
     @Column(name = "id_copy_user")
     open var idCopyUser: Int? = null

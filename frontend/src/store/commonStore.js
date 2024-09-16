@@ -5,6 +5,7 @@ import CommonService from '@/service/CommonService';
 const commonService = CommonService.INSTANCE;
 export const useCommonStore = defineStore('commonStore', () => {
     const departments = ref();
+    const listProvinces = ref();
 
     async function loadDepartments() {
         if (!departments.value) {
@@ -15,8 +16,19 @@ export const useCommonStore = defineStore('commonStore', () => {
         }
     }
 
+    async function loadProvinces() {
+        if (!listProvinces.value) {
+            const value = await commonService.loadProvinces();
+            if (value) {
+                listProvinces.value = value.payload;
+            }
+        }
+    }
+
     return {
         departments,
-        loadDepartments
+        listProvinces,
+        loadDepartments,
+        loadProvinces
     };
 });

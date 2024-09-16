@@ -16,10 +16,7 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
     override val entityManager: EntityManager
 ) : AbstractBaseRepository(entityManager), CancerMedicalRecordRepository {
     override fun create(cancerMedicalRecord: CancerMedicalRecord) {
-//        cancerMedicalRecord.createdAt = Instant.now()
-//        cancerMedicalRecord.createdBy = UserContextHolder.getCurrentUserId()
         cancerMedicalRecord.status = Status.ACTIVATED
-
         entityManager.persist(cancerMedicalRecord)
     }
 
@@ -70,7 +67,11 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
     }
 
 
-    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Status>, department: String?): Long {
+    override fun countByKeywordAndStatus(
+        keyword: String?, status:
+        Collection<Status>,
+        department: String?
+    ): Long {
         val likeKeyword = "%${keyword?.trim()}%"
         val hasDepartment = !department.isNullOrEmpty()
 
@@ -101,6 +102,6 @@ class CancerMedicalRecordRepositoryImpl @Inject constructor(
         countQuery.setParameter("department", department)
         countQuery.setParameter("year", Instant.now().atZone(ZoneId.systemDefault()).year)
         val result = countQuery.singleResult
-        return result
+        return result + 1
     }
 }

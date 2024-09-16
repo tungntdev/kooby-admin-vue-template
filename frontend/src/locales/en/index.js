@@ -7,6 +7,7 @@ import Death_number_form_component from '@/locales/en/views/death_number_form_co
 import Death_number_confirm_delete from '@/locales/en/views/death_number_confirm_delete';
 import Storage_manager from '@/locales/en/views/storage_manager';
 import Confirm_delete from '@/locales/en/global/confirm_delete';
+import Patient_reception_component from '@/locales/en/views/patient_reception_component';
 
 export default {
     'service.default-message.unknown-error': 'There is something wrong, please comeback and try later.',
@@ -28,5 +29,6 @@ export default {
     ...Death_number_form_component,
     ...Death_number_confirm_delete,
     ...Storage_manager,
-    ...Confirm_delete
+    ...Confirm_delete,
+    ...Patient_reception_component
 };
