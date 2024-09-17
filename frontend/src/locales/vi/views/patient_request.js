@@ -1,5 +1,4 @@
 export default {
-
     'patientRequest.button.add': 'Thêm mới',
     'patientRequest.button.search': 'Tìm',
 
@@ -20,4 +19,14 @@ export default {
     'patientRequest.table.done': 'Ngày xong',
     'patientRequest.table.actions': 'Thao tác',
 
+    'patient-request.table.delivery-sate': 'Đăng ký',
+
+    'patient-request.menu.options': 'Lựa chọn',
+    'patient-request.menu.edit': 'Chỉnh sửa',
+    'patient-request.menu.assignment': 'Phân công sao',
+    'patient-request.menu.signed': 'Xác nhận ký',
+    'patient-request.menu.delivered': 'Đã chuyển phát',
+    'patient-request.menu.received': 'Đã trả bệnh nhân',
+    'patient-request.menu.print-ticket': 'In phiếu chuyển',
+    'patient-request.menu.delete': 'Xóa yêu cầu'
 };

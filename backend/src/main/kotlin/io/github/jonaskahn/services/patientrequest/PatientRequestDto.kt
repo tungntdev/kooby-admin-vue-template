@@ -57,10 +57,17 @@ open class PatientRequestDto : Serializable {
     open var idDistrict: Int? = null
     open var deliveryCost: Int? = null
     open var deliveryDate: Instant? = null
+    open var createdAt: Instant? = null
+    open var createdBy: Long? = null
 
     // assignment table
     open var idAssignment: Int? = null
     open var idCopyUser: Int? = null
     open var appointmentDate: LocalDate? = null
     open var completionDate: Instant? = null
+
+    //users table
+    open var firstName: String? = null
+    open var fullName: String? = null
+
 }

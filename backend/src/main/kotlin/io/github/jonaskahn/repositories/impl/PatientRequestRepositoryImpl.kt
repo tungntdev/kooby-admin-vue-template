@@ -3,6 +3,7 @@ package io.github.jonaskahn.repositories.impl
 import io.github.jonaskahn.constants.Defaults
 import io.github.jonaskahn.entities.Assignment
 import io.github.jonaskahn.entities.PatientRequest
+import io.github.jonaskahn.entities.User
 import io.github.jonaskahn.entities.enums.State
 import io.github.jonaskahn.entities.enums.Status
 import io.github.jonaskahn.repositories.AbstractBaseRepository
@@ -61,8 +62,9 @@ class PatientRequestRepositoryImpl @Inject constructor(
         val likeKeyword = "${keyword?.trim()}%"
 
         val queryStr = """
-            SELECT pr, a FROM PatientRequest pr
+            SELECT pr, a, u FROM PatientRequest pr
             LEFT JOIN Assignment a ON a.idPatientRequest =pr
+            LEFT JOIN users u on a.idCopyUser = u.id
             WHERE ( pr.patientNumber LIKE :keyword 
                 OR pr.patientName LIKE :keyword 
                 OR pr.medicineCode LIKE :keyword)
@@ -82,7 +84,8 @@ class PatientRequestRepositoryImpl @Inject constructor(
         return results.map { result ->
             val patientRequest = result[0] as PatientRequest
             val assignment = result[1] as? Assignment
-            PatientRequestEntityToDtoMapper.INSTANCE.toDto(patientRequest, assignment)
+            val user = result[2] as? User
+            PatientRequestEntityToDtoMapper.INSTANCE.toDto(patientRequest, assignment, user)
         }
     }
 
