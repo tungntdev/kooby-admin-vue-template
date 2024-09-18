@@ -6,6 +6,7 @@ import SETTINGS from '@/constants/settings';
 import CreateReception from '@/views/reception/CreateReception.vue';
 import { translate } from '@/locales';
 import EditReception from '@/views/reception/EditReception.vue';
+import ConfirmComponent from '@/views/reception/confirm/ConfirmComponent.vue';
 
 const patientRequestService = PatientRequestService.INSTANCE;
 
@@ -124,15 +125,18 @@ const toggle = (data) => {
                 },
                 {
                     label: translate('patient-request.menu.signed'),
-                    icon: 'pi pi-pencil'
+                    icon: 'pi pi-pencil',
+                    command: async () => await signedClick()
                 },
                 {
                     label: translate('patient-request.menu.delivered'),
-                    icon: 'pi pi-send'
+                    icon: 'pi pi-send',
+                    command: async () => await deliveredClick()
                 },
                 {
                     label: translate('patient-request.menu.received'),
-                    icon: 'pi pi-verified'
+                    icon: 'pi pi-verified',
+                    command: async () => await receivedClick()
                 },
                 {
                     label: translate('patient-request.menu.print-ticket'),
@@ -140,7 +144,8 @@ const toggle = (data) => {
                 },
                 {
                     label: translate('patient-request.menu.delete'),
-                    icon: 'pi pi-trash'
+                    icon: 'pi pi-trash',
+                    command: async () => await deleteClick()
                 }
             ]
         }
@@ -152,7 +157,32 @@ const dataEdit = ref();
 async function edit() {
     editRef.value.visible = true;
     dataEdit.value = selectedPatient.value;
-    console.debug(selectedPatient.value)
+}
+
+const confirmRef = ref();
+
+async function deleteClick() {
+    await confirmRef.value.confirmClick();
+    confirmRef.value.patient = selectedPatient.value;
+    confirmRef.value.confirmType = 'delete';
+}
+
+async function signedClick() {
+    await confirmRef.value.confirmClick();
+    confirmRef.value.patient = selectedPatient.value;
+    confirmRef.value.confirmType = 'signed';
+}
+
+async function deliveredClick() {
+    await confirmRef.value.confirmClick();
+    confirmRef.value.patient = selectedPatient.value;
+    confirmRef.value.confirmType = 'delivered';
+}
+
+async function receivedClick() {
+    await confirmRef.value.confirmClick();
+    confirmRef.value.patient = selectedPatient.value;
+    confirmRef.value.confirmType = 'received';
 }
 </script>
 
@@ -226,6 +256,7 @@ async function edit() {
         </div>
         <create-reception ref="createRef" @callFetchData="fetchPatientRequest" />
         <edit-reception ref="editRef" :dataEdit="dataEdit" @callFetchData="fetchPatientRequest" />
+        <confirm-component ref="confirmRef" @callFetchData="fetchPatientRequest" />
     </div>
 </template>
 

@@ -26,7 +26,7 @@ class PatientRequestRepositoryImpl @Inject constructor(
         entityManager.merge(entity)
     }
 
-    override fun delete(id: Long) {
+    override fun delete(id: Int) {
         val entity = entityManager.find(PatientRequest::class.java, id)
         if (entity != null) {
             entity.status = Status.DELETED
@@ -113,5 +113,31 @@ class PatientRequestRepositoryImpl @Inject constructor(
         countQuery.setParameter("delivery", 1)
         countQuery.setParameter("year", Instant.now().atZone(ZoneId.systemDefault()).year)
         return countQuery.singleResult + 1
+    }
+
+    override fun setSigned(id: Int) {
+        val entity = entityManager.find(PatientRequest::class.java, id)
+        if (entity != null) {
+            entity.signDate = Instant.now()
+            entity.state = State.DIRECTOR_APPROVED
+            entityManager.merge(entity)
+        }
+    }
+
+    override fun setReceived(id: Int) {
+        val entity = entityManager.find(PatientRequest::class.java, id)
+        if (entity != null) {
+            entity.donePatientDate = Instant.now()
+            entity.state = State.COMPLETE
+            entityManager.merge(entity)
+        }
+    }
+
+    override fun setInProgress(id: Long) {
+        val entity = entityManager.find(PatientRequest::class.java, id)
+        if (entity != null) {
+            entity.state = State.IN_PROGRESS
+            entityManager.merge(entity)
+        }
     }
 }

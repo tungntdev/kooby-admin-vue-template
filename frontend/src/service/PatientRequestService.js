@@ -100,4 +100,32 @@ export default class PatientRequestService extends BaseService {
             return 1;
         }
     }
+
+    async setSigned(id) {
+        return await this.request(
+            {
+                path: api.PATIENT_REQUEST.SET_SIGNED + id,
+                method: 'PUT'
+            },
+            {
+                secure: true,
+                notifyOnSuccess: true,
+                notifyOnError: true
+            }
+        );
+    }
+
+    async setReceived(id) {
+        return await this.request(
+            {
+                path: api.PATIENT_REQUEST.SET_RECEIVED + id,
+                method: 'PUT'
+            },
+            {
+                secure: true,
+                notifyOnSuccess: true,
+                notifyOnError: true
+            }
+        );
+    }
 }

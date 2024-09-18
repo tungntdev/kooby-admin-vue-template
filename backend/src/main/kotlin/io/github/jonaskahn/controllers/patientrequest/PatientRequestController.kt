@@ -52,4 +52,16 @@ class PatientRequestController @Inject constructor(
         accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
         return patientRequestService.findNextPatientDeliveryNumber()
     }
+
+    @PUT("/patient-request/signed/{id}")
+    fun signedPatientRequest(@PathParam("id") id: Int) {
+        accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
+        return patientRequestService.setSigned(id)
+    }
+
+    @PUT("/patient-request/received/{id}")
+    fun receivedPatientRequest(@PathParam("id") id: Int) {
+        accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
+        return patientRequestService.setReceived(id)
+    }
 }

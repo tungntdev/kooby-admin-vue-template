@@ -21,4 +21,10 @@ interface PatientRequestService {
 
     fun findNextPatientOrder(): Long
     fun findNextPatientDeliveryNumber(): Long
+
+    fun setSigned(id: Int)
+
+    fun setReceived(id: Int)
+
+    fun setInProgress(id: Long)
 }

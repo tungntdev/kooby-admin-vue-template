@@ -9,7 +9,10 @@ const API = {
         UPDATE: '/secure/patient-request/update',
         DELETE: '/secure/patient-request/delete/',
         NEXT_PATIENT_ORDER: '/secure/patient-request/next-order',
-        NEXT_DELIVERY_ORDER: '/secure/patient-request/next-delivery-order'
+        NEXT_DELIVERY_ORDER: '/secure/patient-request/next-delivery-order',
+        SET_SIGNED: '/secure/patient-request/signed/',
+        SET_DELIVERED: '',
+        SET_RECEIVED: '/secure/patient-request/received/'
     },
 
     DEATH_RECORD: {

@@ -22,7 +22,7 @@ internal class PatientRequestServiceImpl @Inject constructor(
 
 
     override fun deleteRequest(requestId: Int) {
-        TODO("Not yet implemented")
+        return patientRequestRepository.delete(requestId)
     }
 
     override fun search(
@@ -46,5 +46,17 @@ internal class PatientRequestServiceImpl @Inject constructor(
 
     override fun findNextPatientDeliveryNumber(): Long {
         return patientRequestRepository.findNextPatientDeliveryNumber()
+    }
+
+    override fun setSigned(id: Int) {
+        return patientRequestRepository.setSigned(id)
+    }
+
+    override fun setReceived(id: Int) {
+        return patientRequestRepository.setReceived(id)
+    }
+
+    override fun setInProgress(id: Long) {
+        return patientRequestRepository.setInProgress(id)
     }
 }

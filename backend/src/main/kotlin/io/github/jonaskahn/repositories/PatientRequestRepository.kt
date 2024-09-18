@@ -12,7 +12,7 @@ interface PatientRequestRepository {
 
     fun update(entity: PatientRequest)
 
-    fun delete(id: Long)
+    fun delete(id: Int)
 
     fun countByKeywordAndState(keyword: String?, state: Collection<State>): Long
 
@@ -25,4 +25,10 @@ interface PatientRequestRepository {
     fun findNextPatientOrder(): Long
 
     fun findNextPatientDeliveryNumber(): Long
+
+    fun setSigned(id: Int)
+
+    fun setReceived(id: Int)
+
+    fun setInProgress(id: Long)
 }
