@@ -10,6 +10,7 @@ const props = defineProps({
 });
 
 const dataInput = reactive({
+    id:null,
     medicineCode: null,
     numberOrder: null,
     patientNumber: null,
@@ -23,6 +24,8 @@ const dataInput = reactive({
     appointmentPatientDate: null,
     note: null,
     delivery: 0,
+    state: null,
+    status: null,
     deliveryOrderNumber: null,
     idProvince: null,
     idDistrict: null,

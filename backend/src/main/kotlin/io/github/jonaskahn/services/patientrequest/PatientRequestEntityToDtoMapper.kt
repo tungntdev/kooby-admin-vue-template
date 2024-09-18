@@ -18,7 +18,7 @@ interface PatientRequestEntityToDtoMapper {
     @Mappings(
         Mapping(source = "assignment.id", target = "idAssignment"),
         Mapping(source = "patientRequest.status", target = "requestStatus"),
-        Mapping(source = "patientRequest.id", target = "idPatientRequest"),
+        Mapping(source = "patientRequest.id", target = "id"),
         Mapping(source = "patientRequest.createdAt", target = "createdAt"),
         Mapping(source = "patientRequest.createdBy", target = "createdBy"),
     )

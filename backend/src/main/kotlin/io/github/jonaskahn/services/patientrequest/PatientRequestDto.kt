@@ -11,7 +11,7 @@ import java.time.LocalDate
 
 open class PatientRequestDto : Serializable {
 
-    open var idPatientRequest: Int? = null
+    open var id: Int? = null
 
     @JsonAlias("number_order")
     open var numberOrder: Int? = null

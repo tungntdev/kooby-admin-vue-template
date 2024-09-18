@@ -152,6 +152,7 @@ const dataEdit = ref();
 async function edit() {
     editRef.value.visible = true;
     dataEdit.value = selectedPatient.value;
+    console.debug(selectedPatient.value)
 }
 </script>
 
@@ -166,7 +167,7 @@ async function edit() {
                     <Button type="button" :label="$tt('patient-request.button.search')" icon="pi pi-search" severity="success" />
                 </template>
             </Toolbar>
-            <DataTable :value="patientRequests" size="small" scrollable scrollHeight="500px" tableStyle="min-width: 50rem">
+            <DataTable :value="patientRequests" size="small" scrollable scrollHeight="600px" tableStyle="min-width: 50rem">
                 <template #header>
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xl font-bold">{{ $tt('patient-request.table.title') }}</span>
