@@ -31,4 +31,6 @@ interface PatientRequestRepository {
     fun setReceived(id: Int)
 
     fun setInProgress(id: Long)
+
+    fun setDelivered(id: Int)
 }

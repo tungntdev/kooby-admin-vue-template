@@ -5,6 +5,7 @@ import { defineEmits, inject, ref, watch } from 'vue';
 import SETTINGS from '@/constants/settings';
 import { translate } from '@/locales';
 import PatientRequestService from '@/service/PatientRequestService';
+import Common from '@/constants/common';
 
 const toast = useToast();
 const confirm = useConfirm();
@@ -18,19 +19,19 @@ const message = ref();
 
 watch(confirmType, (newValue) => {
     switch (newValue) {
-        case 'delete':
+        case Common.CONFIRM_TYPE.DELETE:
             header.value = translate('patient-reception_confirm.delete.label.header');
             message.value = translate('patient-reception_confirm.delete.label.message');
             break;
-        case 'signed':
+        case Common.CONFIRM_TYPE.SIGNED:
             header.value = translate('patient-reception_confirm.signed.label.header');
             message.value = translate('patient-reception_confirm.signed.label.message');
             break;
-        case 'delivered':
+        case Common.CONFIRM_TYPE.DELIVERED:
             header.value = translate('patient-reception_confirm.delivered.label.header');
             message.value = translate('patient-reception_confirm.delivered.label.message');
             break;
-        case 'received':
+        case Common.CONFIRM_TYPE.RECEIVED:
             header.value = translate('patient-reception_confirm.received.label.header');
             message.value = translate('patient-reception_confirm.received.label.message');
             break;
@@ -48,16 +49,20 @@ async function confirmClick() {
             const loader = $loading.show(SETTINGS.LOADING_PROPERTIES);
             try {
             } finally {
-                if (confirmType.value === 'delete') {
+                if (confirmType.value === Common.CONFIRM_TYPE.DELETE) {
                     await patientRequestService.delete(patient.value.id);
                 }
 
-                if (confirmType.value === 'signed') {
+                if (confirmType.value === Common.CONFIRM_TYPE.SIGNED) {
                     await patientRequestService.setSigned(patient.value.id);
                 }
 
-                if (confirmType.value === 'received') {
+                if (confirmType.value === Common.CONFIRM_TYPE.RECEIVED) {
                     await patientRequestService.setReceived(patient.value.id);
+                }
+
+                if (confirmType.value === Common.CONFIRM_TYPE.DELIVERED) {
+                    await patientRequestService.setDelivered(patient.value.id);
                 }
 
                 emit('callFetchData');

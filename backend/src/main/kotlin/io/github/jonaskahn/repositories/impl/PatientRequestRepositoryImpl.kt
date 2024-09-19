@@ -127,6 +127,12 @@ class PatientRequestRepositoryImpl @Inject constructor(
     override fun setReceived(id: Int) {
         val entity = entityManager.find(PatientRequest::class.java, id)
         if (entity != null) {
+            if(entity.signDate==null){
+                entity.signDate = Instant.now()
+            }
+            if(entity.donePatientDate==null){
+                entity.donePatientDate = Instant.now()
+            }
             entity.donePatientDate = Instant.now()
             entity.state = State.COMPLETE
             entityManager.merge(entity)
@@ -137,6 +143,21 @@ class PatientRequestRepositoryImpl @Inject constructor(
         val entity = entityManager.find(PatientRequest::class.java, id)
         if (entity != null) {
             entity.state = State.IN_PROGRESS
+            entityManager.merge(entity)
+        }
+    }
+
+    override fun setDelivered(id: Int) {
+        val entity = entityManager.find(PatientRequest::class.java, id)
+        if (entity != null) {
+            if(entity.donePatientDate==null){
+                entity.donePatientDate = Instant.now()
+            }
+            if(entity.signDate==null){
+                entity.signDate = Instant.now()
+            }
+            entity.deliveryDate = Instant.now()
+            entity.state = State.COMPLETE
             entityManager.merge(entity)
         }
     }

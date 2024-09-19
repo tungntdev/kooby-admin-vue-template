@@ -64,4 +64,10 @@ class PatientRequestController @Inject constructor(
         accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
         return patientRequestService.setReceived(id)
     }
+
+    @PUT("/patient-request/delivered/{id}")
+    fun deliveredPatientRequest(@PathParam("id") id: Int) {
+        accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
+        return patientRequestService.setDelivered(id)
+    }
 }

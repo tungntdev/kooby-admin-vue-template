@@ -59,4 +59,8 @@ internal class PatientRequestServiceImpl @Inject constructor(
     override fun setInProgress(id: Long) {
         return patientRequestRepository.setInProgress(id)
     }
+
+    override fun setDelivered(id: Int) {
+        return patientRequestRepository.setDelivered(id)
+    }
 }

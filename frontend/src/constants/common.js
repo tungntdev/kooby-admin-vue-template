@@ -16,6 +16,13 @@ const COMMON = {
         DELETED: 9
     },
 
+    CONFIRM_TYPE:{
+        DELETE: 'delete',
+        SIGNED: 'signed',
+        RECEIVED: 'received',
+        DELIVERED: 'delivered'
+    },
+
     DEFAULT_ROW_PAGE: 10
 };
 

@@ -87,10 +87,11 @@ const getSeverity = (status) => {
 };
 
 const getDeliveryState = (data) => {
+    console.debug(data.delivery)
     if (data.deliveryDate) {
         return formatDate(data.deliveryDate);
     } else {
-        if (data.deliveryOrderNumber) {
+        if (data.delivery===1) {
             return translate('patient-request.table.delivery-sate');
         }
     }
@@ -110,46 +111,86 @@ const items = ref([]);
 const toggle = (data) => {
     menu.value.toggle(event);
     selectedPatient.value = data;
-    items.value = [
-        {
-            label: translate('patient-request.menu.options'),
-            items: [
-                {
-                    label: translate('patient-request.menu.edit'),
-                    icon: 'pi pi-file-edit',
-                    command: async () => await edit()
-                },
-                {
-                    label: translate('patient-request.menu.assignment'),
-                    icon: 'pi pi-user'
-                },
-                {
-                    label: translate('patient-request.menu.signed'),
-                    icon: 'pi pi-pencil',
-                    command: async () => await signedClick()
-                },
-                {
-                    label: translate('patient-request.menu.delivered'),
-                    icon: 'pi pi-send',
-                    command: async () => await deliveredClick()
-                },
-                {
-                    label: translate('patient-request.menu.received'),
-                    icon: 'pi pi-verified',
-                    command: async () => await receivedClick()
-                },
-                {
-                    label: translate('patient-request.menu.print-ticket'),
-                    icon: 'pi pi-print'
-                },
-                {
-                    label: translate('patient-request.menu.delete'),
-                    icon: 'pi pi-trash',
-                    command: async () => await deleteClick()
-                }
-            ]
-        }
-    ];
+    const editMenu = {
+            label: translate('patient-request.menu.edit'),
+            icon: 'pi pi-file-edit',
+            command: async () => await edit()
+        };
+
+    const  assignmentMenu = {
+            label: translate('patient-request.menu.assignment'),
+            icon: 'pi pi-user'
+        };
+
+    const signedMenu = {
+            label: translate('patient-request.menu.signed'),
+            icon: 'pi pi-pencil',
+            command: async () => await signedClick()
+        };
+
+    const deliveredMenu = {
+            label: translate('patient-request.menu.delivered'),
+            icon: 'pi pi-send',
+            command: async () => await deliveredClick()
+        };
+
+    const receivedMenu =    {
+            label: translate('patient-request.menu.received'),
+            icon: 'pi pi-verified',
+            command: async () => await receivedClick()
+        };
+
+    const printTicketMenu = {
+            label: translate('patient-request.menu.print-ticket'),
+            icon: 'pi pi-print'
+        };
+
+    const deleteMenu = {
+        label: translate('patient-request.menu.delete'),
+        icon: 'pi pi-trash',
+        command: async () => await deleteClick()
+    }
+
+    switch (data.state){
+        case Common.STATES.PENDING:
+            items.value = [{
+                label: translate('patient-request.menu.options'),
+                items :[editMenu, assignmentMenu, signedMenu, receivedMenu, printTicketMenu, deleteMenu ]
+            }]
+            break
+
+        case Common.STATES.ASSIGNED:
+            items.value = [{
+                label: translate('patient-request.menu.options'),
+                items :[editMenu, signedMenu, receivedMenu, printTicketMenu, deleteMenu ]
+            }]
+            break
+
+        case Common.STATES.IN_PROGRESS:
+            items.value = [{
+                label: translate('patient-request.menu.options'),
+                items :[editMenu, signedMenu, receivedMenu, printTicketMenu, deleteMenu ]
+            }]
+            break
+
+        case Common.STATES.DIRECTOR_APPROVED:
+            items.value = [{
+                label: translate('patient-request.menu.options'),
+                items :[editMenu, receivedMenu, printTicketMenu, deleteMenu ]
+            }]
+            break
+
+        case Common.STATES.COMPLETE:
+            items.value = [{
+                label: translate('patient-request.menu.options'),
+                items :[editMenu, printTicketMenu, deleteMenu ]
+            }]
+            break;
+
+    }
+    if (data.delivery===1 && !data.deliveryDate) {
+        items.value[0].items.push(deliveredMenu);
+    }
 };
 const editRef = ref();
 const dataEdit = ref();
@@ -164,25 +205,25 @@ const confirmRef = ref();
 async function deleteClick() {
     await confirmRef.value.confirmClick();
     confirmRef.value.patient = selectedPatient.value;
-    confirmRef.value.confirmType = 'delete';
+    confirmRef.value.confirmType = Common.CONFIRM_TYPE.DELETE;
 }
 
 async function signedClick() {
     await confirmRef.value.confirmClick();
     confirmRef.value.patient = selectedPatient.value;
-    confirmRef.value.confirmType = 'signed';
+    confirmRef.value.confirmType = Common.CONFIRM_TYPE.SIGNED;
 }
 
 async function deliveredClick() {
     await confirmRef.value.confirmClick();
     confirmRef.value.patient = selectedPatient.value;
-    confirmRef.value.confirmType = 'delivered';
+    confirmRef.value.confirmType = Common.CONFIRM_TYPE.DELIVERED;
 }
 
 async function receivedClick() {
     await confirmRef.value.confirmClick();
     confirmRef.value.patient = selectedPatient.value;
-    confirmRef.value.confirmType = 'received';
+    confirmRef.value.confirmType = Common.CONFIRM_TYPE.RECEIVED;
 }
 </script>
 
