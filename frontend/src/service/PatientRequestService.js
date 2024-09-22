@@ -142,4 +142,19 @@ export default class PatientRequestService extends BaseService {
             }
         );
     }
+
+    async setAssignment(params) {
+        return await this.request(
+            {
+                path: api.PATIENT_REQUEST.SET_ASSIGNMENT,
+                method: 'PUT',
+                data: params
+            },
+            {
+                secure: true,
+                notifyOnSuccess: true,
+                notifyOnError: true
+            }
+        );
+    }
 }

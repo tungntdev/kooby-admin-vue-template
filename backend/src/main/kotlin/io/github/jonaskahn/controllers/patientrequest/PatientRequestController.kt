@@ -70,4 +70,28 @@ class PatientRequestController @Inject constructor(
         accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
         return patientRequestService.setDelivered(id)
     }
+
+    @PUT("/patient-request/assignment")
+    fun assignedPatientRequest(assignment: AssignmentForm) {
+        accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
+        return patientRequestService.setAssignment(assignment.id, assignment.idCopyUser, assignment.appointmentDate)
+    }
+
+    @POST("/patient-request/patient-report")
+    fun patientRequestReport(request: ReportForm): Collection<ReportResponse> {
+        accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
+        return patientRequestService.patientRequestReport(request.startDate, request.endDate)
+    }
+
+    @POST("/patient-request/delivery-report")
+    fun deliveryReport(request: ReportForm): Collection<ReportResponse> {
+        accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
+        return patientRequestService.deliveryReport(request.startDate, request.endDate)
+    }
+
+    @POST("/patient-request/delivered-report")
+    fun deliveredReport(request: ReportForm): Collection<ReportResponse> {
+        accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
+        return patientRequestService.deliveredReport(request.startDate, request.endDate)
+    }
 }

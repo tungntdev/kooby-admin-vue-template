@@ -126,7 +126,7 @@ function onClickEdit(record) {
 
                 <template v-slot:end>
                     <FloatLabel class="mr-4">
-                        <InputText id="keyword" v-model="keyword" />
+                        <InputText id="keyword" v-model="keyword" @keydown.enter="fetchData" />
                         <label for="keyword">{{ $tt('storage_manager.input.search') }}</label>
                     </FloatLabel>
                     <Button type="button" :label="$tt('storage_manager.button.search')" icon="pi pi-search" severity="success" @click="fetchData" />

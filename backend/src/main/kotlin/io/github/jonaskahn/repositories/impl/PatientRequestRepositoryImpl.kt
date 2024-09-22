@@ -1,6 +1,7 @@
 package io.github.jonaskahn.repositories.impl
 
 import io.github.jonaskahn.constants.Defaults
+import io.github.jonaskahn.controllers.patientrequest.ReportResponse
 import io.github.jonaskahn.entities.Assignment
 import io.github.jonaskahn.entities.PatientRequest
 import io.github.jonaskahn.entities.User
@@ -12,8 +13,12 @@ import io.github.jonaskahn.services.patientrequest.PatientRequestDto
 import io.github.jonaskahn.services.patientrequest.PatientRequestEntityToDtoMapper
 import jakarta.inject.Inject
 import jakarta.persistence.EntityManager
+import jakarta.persistence.NoResultException
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
+import java.util.*
 
 class PatientRequestRepositoryImpl @Inject constructor(
     override val entityManager: EntityManager
@@ -38,7 +43,7 @@ class PatientRequestRepositoryImpl @Inject constructor(
         keyword: String?,
         state: Collection<State>
     ): Long {
-        val likeKeyword = "${keyword?.trim()}%"
+        val likeKeyword = "%${keyword?.trim()}%"
         val countQueryStr = """
             SELECT COUNT(pr) FROM PatientRequest pr
             WHERE (pr.patientNumber LIKE :keyword 
@@ -59,7 +64,7 @@ class PatientRequestRepositoryImpl @Inject constructor(
         state: Collection<State>,
         offset: Long
     ): Collection<PatientRequestDto> {
-        val likeKeyword = "${keyword?.trim()}%"
+        val likeKeyword = "%${keyword?.trim()}%"
 
         val queryStr = """
             SELECT pr, a, u FROM PatientRequest pr
@@ -127,10 +132,10 @@ class PatientRequestRepositoryImpl @Inject constructor(
     override fun setReceived(id: Int) {
         val entity = entityManager.find(PatientRequest::class.java, id)
         if (entity != null) {
-            if(entity.signDate==null){
+            if (entity.signDate == null) {
                 entity.signDate = Instant.now()
             }
-            if(entity.donePatientDate==null){
+            if (entity.donePatientDate == null) {
                 entity.donePatientDate = Instant.now()
             }
             entity.donePatientDate = Instant.now()
@@ -150,10 +155,10 @@ class PatientRequestRepositoryImpl @Inject constructor(
     override fun setDelivered(id: Int) {
         val entity = entityManager.find(PatientRequest::class.java, id)
         if (entity != null) {
-            if(entity.donePatientDate==null){
+            if (entity.donePatientDate == null) {
                 entity.donePatientDate = Instant.now()
             }
-            if(entity.signDate==null){
+            if (entity.signDate == null) {
                 entity.signDate = Instant.now()
             }
             entity.deliveryDate = Instant.now()
@@ -161,4 +166,85 @@ class PatientRequestRepositoryImpl @Inject constructor(
             entityManager.merge(entity)
         }
     }
+
+    override fun setAssignment(id: Int, idCopyUser: Int, appointmentDate: LocalDate) {
+        val entity = entityManager.find(PatientRequest::class.java, id)
+        if (entity != null) {
+            entity.state = State.ASSIGNED
+            entityManager.merge(entity)
+            var assignmentAvailable: Assignment?
+            try {
+                val queryStr =
+                    "SELECT a FROM Assignment a WHERE a.idPatientRequest = :idPatientRequest AND a.status = :status"
+                val query = entityManager.createQuery(queryStr, Assignment::class.java)
+                query.setParameter("idPatientRequest", entity)
+                query.setParameter("status", Status.ACTIVATED)
+                assignmentAvailable = query.singleResult
+            } catch (e: NoResultException) {
+                assignmentAvailable = null
+            }
+
+            if (assignmentAvailable != null) {
+                assignmentAvailable.idPatientRequest = entity
+                assignmentAvailable.idCopyUser = idCopyUser
+                assignmentAvailable.appointmentDate = appointmentDate
+                entityManager.merge(assignmentAvailable)
+            } else {
+                val newAssignment = Assignment().apply {
+                    this.idPatientRequest = entity
+                    this.idCopyUser = idCopyUser
+                    this.appointmentDate = appointmentDate
+                }
+                entityManager.persist(newAssignment)
+            }
+        }
+    }
+
+    private fun generateReport(
+        startDate: LocalDate?,
+        endDate: LocalDate?,
+        additionalConditions: String = ""
+    ): Collection<ReportResponse> {
+        val startInstant = startDate?.atStartOfDay(ZoneOffset.UTC)?.toInstant()
+        val endInstant = endDate?.atStartOfDay(ZoneOffset.UTC)?.toInstant()
+
+        val baseQuery = """
+        SELECT pr FROM PatientRequest pr
+        WHERE pr.status = :status
+        $additionalConditions
+    """
+
+        val query = entityManager.createQuery(baseQuery, PatientRequest::class.java)
+        query.setParameter("status", Status.ACTIVATED)
+        query.setParameter("startDate", startInstant)
+        query.setParameter("endDate", endInstant)
+
+        val results = query.resultList
+        val reportResponses = PatientRequestEntityToDtoMapper.INSTANCE.toReportResponse(results)
+        reportResponses.forEachIndexed { index, reportResponse ->
+            reportResponse.order = index + 1
+        }
+        return reportResponses
+    }
+
+    override fun patientRequestReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse> {
+        return generateReport(startDate, endDate, " AND pr.receptionDate BETWEEN :startDate AND :endDate")
+    }
+
+    override fun deliveryReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse> {
+        return generateReport(
+            startDate,
+            endDate,
+            "AND pr.receptionDate BETWEEN :startDate AND :endDate AND pr.delivery = 1"
+        )
+    }
+
+    override fun deliveredReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse> {
+        return generateReport(
+            startDate,
+            endDate,
+            " AND pr.delivery = 1 AND pr.deliveryDate BETWEEN :startDate AND :endDate"
+        )
+    }
+
 }

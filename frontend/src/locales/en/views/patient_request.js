@@ -10,6 +10,7 @@ export default {
     'patient-request.table.department': 'Department',
     'patient-request.table.inDate': 'In Date',
     'patient-request.table.outDate': 'Out Date',
+    'patient-request.table.appointmentPatientDate': 'Appointment Date',
     'patient-request.table.quantity': 'Quantity',
     'patient-request.table.note': 'Note',
     'patient-request.table.state': 'State',

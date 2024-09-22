@@ -11,6 +11,7 @@ import java.time.LocalDate
 @Table(name = "assignments")
 open class Assignment : BaseEntity() {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     open var id: Int? = null
 

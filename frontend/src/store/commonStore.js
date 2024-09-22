@@ -6,6 +6,7 @@ const commonService = CommonService.INSTANCE;
 export const useCommonStore = defineStore('commonStore', () => {
     const departments = ref();
     const listProvinces = ref();
+    const listCopyUsers = ref();
 
     async function loadDepartments() {
         if (!departments.value) {
@@ -25,10 +26,22 @@ export const useCommonStore = defineStore('commonStore', () => {
         }
     }
 
+    async function loadCopyUsers() {
+        if (!listCopyUsers.value) {
+            const value = await commonService.loadCopyUsers();
+            console.debug(value);
+            if (value) {
+                listCopyUsers.value = value.payload;
+            }
+        }
+    }
+
     return {
         departments,
         listProvinces,
+        listCopyUsers,
         loadDepartments,
-        loadProvinces
+        loadProvinces,
+        loadCopyUsers
     };
 });

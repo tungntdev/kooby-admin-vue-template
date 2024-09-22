@@ -1,6 +1,7 @@
 package io.github.jonaskahn.services.patientrequest
 
 import io.github.jonaskahn.controllers.patientrequest.PatientRequestForm
+import io.github.jonaskahn.controllers.patientrequest.ReportResponse
 import io.github.jonaskahn.entities.Assignment
 import io.github.jonaskahn.entities.PatientRequest
 import io.github.jonaskahn.entities.User
@@ -25,4 +26,6 @@ interface PatientRequestEntityToDtoMapper {
     fun toDto(patientRequest: PatientRequest, assignment: Assignment?, user: User?): PatientRequestDto
 
     fun formToPatientRequest(formPatient: PatientRequestForm): PatientRequest
+
+    fun toReportResponse(patientRequest: Collection<PatientRequest>): Collection<ReportResponse>
 }

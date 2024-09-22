@@ -10,6 +10,8 @@ import Confirm_delete from '@/locales/vi/global/confirm_delete';
 import Storage_component from '@/locales/vi/views/storage_component';
 import Patient_reception_component from '@/locales/vi/views/patient_reception_component';
 import Patient_reception_confirm from '@/locales/vi/views/patient_reception_confirm';
+import Patient_reception_assignment from '@/locales/vi/views/patient_reception_assignment';
+import Report_request from '@/locales/vi/views/report_request';
 
 export default {
     'service.default-message.unknown-error': 'Đã có sự cố xảy ra. Vui lòng thử lại sau.',
@@ -34,5 +36,7 @@ export default {
     ...Confirm_delete,
     ...Storage_component,
     ...Patient_reception_component,
-    ...Patient_reception_confirm
+    ...Patient_reception_confirm,
+    ...Patient_reception_assignment,
+    ...Report_request
 };

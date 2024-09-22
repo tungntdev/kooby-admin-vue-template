@@ -2,6 +2,7 @@ package io.github.jonaskahn.repositories
 
 import io.github.jonaskahn.assistant.query.JpaQueryExecutor
 import io.github.jonaskahn.constants.Defaults
+import io.github.jonaskahn.constants.Roles
 import io.github.jonaskahn.entities.User
 import io.github.jonaskahn.entities.enums.Status
 import io.github.jonaskahn.services.user.UserDto
@@ -107,6 +108,26 @@ class UserRepositoryImpl @Inject constructor(
             builder.append(" limit :limit offset :offset")
             params["limit"] = Defaults.Pageable.DEFAULT_PAGE_SIZE
             params["offset"] = offset
+        }
+    }
+
+    override fun findAllCopyUsers(): List<UserDto> {
+        val queryStr =
+            "SELECT u.id, u.username, u.email, u.first_name, u.full_name FROM users u WHERE u.status = :status AND u.roles LIKE :role"
+        val query = entityManager.createNativeQuery(queryStr)
+        query.setParameter("status", Status.ACTIVATED)
+        query.setParameter("role", '%' + Roles.COPY_MAN + '%')
+
+        val resultList = query.resultList as List<Array<Any>>
+
+        return resultList.map {
+            UserDto().apply {
+                id = (it[0] as Long).toLong() // assuming id is a BigInteger
+                username = it[1] as? String
+                email = it[2] as? String
+                firstName = it[3] as? String
+                fullName = it[4] as? String
+            }
         }
     }
 

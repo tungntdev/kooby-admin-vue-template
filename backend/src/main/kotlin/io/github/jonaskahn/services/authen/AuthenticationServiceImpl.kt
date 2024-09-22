@@ -51,6 +51,8 @@ internal class AuthenticationServiceImpl @Inject constructor(
         userProfile.addAttribute(Jwt.Attribute.EXP, expirationDate)
 
         userProfile.addAttribute(CommonProfileDefinition.DISPLAY_NAME, user.fullName)
+        userProfile.addAttribute(CommonProfileDefinition.FIRST_NAME, user.firstName)
+        userProfile.addAttribute(CommonProfileDefinition.PICTURE_URL, user.imageLink)
         val jwtGenerator = JwtGenerator(
             SecretSignatureConfiguration(environment.config.getString("jwt.salt"))
         )

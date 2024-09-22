@@ -65,4 +65,8 @@ internal class UserServiceImpl @Inject constructor(
         return userRepository.findCustomActivatedUserByPreferredUsername(preferredUsername.toLong())
             ?: throw UserNotFoundException()
     }
+
+    override fun findAllCopyUsers(): List<UserDto> {
+        return userRepository.findAllCopyUsers()
+    }
 }

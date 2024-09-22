@@ -45,7 +45,7 @@ const PageSpec = {
             name: 'dashboard',
             meta: {
                 title: 'page.menu-title.page.dashboard',
-                permissions: []
+                permissions: 'USER'
             },
             component: () => import('@/views/Dashboard.vue')
         },
@@ -55,9 +55,18 @@ const PageSpec = {
                 name: 'reception',
                 meta: {
                     title: 'page.menu-title.page.patient-reception',
-                    permissions: []
+                    permissions: 'DATA_ENTRY_PERSON'
                 },
                 component: () => import('@/views/reception/PatientReception.vue')
+            },
+            REPORT_REQUEST: {
+                path: '/patient/report-request',
+                name: 'report_request',
+                meta: {
+                    title: 'page.menu-title.page.patient-reception',
+                    permissions: 'DATA_ENTRY_PERSON'
+                },
+                component: () => import('@/views/reception/report/Request.vue')
             }
         },
         DEATH_NUMBER: {
@@ -65,7 +74,7 @@ const PageSpec = {
             name: 'death',
             meta: {
                 title: 'page.menu-title.page.number-allocation',
-                permissions: []
+                permissions: 'DOCUMENT_ISSUER'
             },
             component: () => import('@/views/deathnumber/Manager.vue')
         },
@@ -74,7 +83,7 @@ const PageSpec = {
             name: 'storage',
             meta: {
                 title: 'page.menu-title.page.medical-record-storage',
-                permissions: []
+                permissions: 'MANAGER'
             },
             component: () => import('@/views/storage/Manager.vue')
         },

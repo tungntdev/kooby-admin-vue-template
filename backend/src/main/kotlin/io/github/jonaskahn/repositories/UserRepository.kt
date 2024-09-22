@@ -25,4 +25,6 @@ interface UserRepository {
         status: Collection<Status>,
         offset: Long
     ): Collection<UserDto>
+
+    fun findAllCopyUsers(): List<UserDto>
 }

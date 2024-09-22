@@ -16,15 +16,11 @@ class DeathRecordRepositoryImpl @Inject constructor(
 ) : AbstractBaseRepository(entityManager), DeathRecordRepository {
     override fun create(deathRecord: DeathRecord) {
         deathRecord.receiver = UserContextHolder.getCurrentUserId()
-        deathRecord.createdBy = UserContextHolder.getCurrentUserId()
-        deathRecord.createdAt = Instant.now()
         deathRecord.status = Status.ACTIVATED
         entityManager.persist(deathRecord)
     }
 
     override fun update(deathRecord: DeathRecord) {
-        deathRecord.updatedBy = UserContextHolder.getCurrentUserId()
-        deathRecord.updatedAt = Instant.now()
         entityManager.merge(deathRecord)
     }
 

@@ -2,10 +2,12 @@ package io.github.jonaskahn.services.patientrequest
 
 import io.github.jonaskahn.assistant.PageData
 import io.github.jonaskahn.controllers.patientrequest.PatientRequestForm
+import io.github.jonaskahn.controllers.patientrequest.ReportResponse
 import io.github.jonaskahn.entities.enums.State
 import io.github.jonaskahn.repositories.PatientRequestRepository
 import io.github.jonaskahn.services.PagingService
 import jakarta.inject.Inject
+import java.time.LocalDate
 
 internal class PatientRequestServiceImpl @Inject constructor(
     private val patientRequestRepository: PatientRequestRepository,
@@ -62,5 +64,21 @@ internal class PatientRequestServiceImpl @Inject constructor(
 
     override fun setDelivered(id: Int) {
         return patientRequestRepository.setDelivered(id)
+    }
+
+    override fun setAssignment(id: Int, copierId: Int, appointmentDate: LocalDate) {
+        return patientRequestRepository.setAssignment(id, copierId, appointmentDate)
+    }
+
+    override fun patientRequestReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse> {
+        return patientRequestRepository.patientRequestReport(startDate, endDate)
+    }
+
+    override fun deliveryReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse> {
+        return patientRequestRepository.deliveryReport(startDate, endDate)
+    }
+
+    override fun deliveredReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse> {
+        return patientRequestRepository.deliveredReport(startDate, endDate)
     }
 }

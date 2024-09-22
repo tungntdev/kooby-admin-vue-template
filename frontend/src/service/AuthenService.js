@@ -29,9 +29,22 @@ export default class AuthService extends BaseService {
 
     #updateAccessTokenInfo(data) {
         localStorage.setItem(DEFAULTS.ACCESS.TOKEN, data);
-        const token = JSON.parse(atob(data.split('.')[1]));
+        const token = JSON.parse(this.decodeUnicodeBase64(data.split('.')[1]));
         localStorage.setItem(DEFAULTS.ACCESS.EXPIRATION, token['exp']);
+        localStorage.setItem(DEFAULTS.ACCESS.PERMISSIONS, JSON.stringify(token['$int_roles']));
+        localStorage.setItem(DEFAULTS.PROFILE.FULL_NAME, token['display_name']);
+        localStorage.setItem(DEFAULTS.PROFILE.FIRST_NAME, token['first_name']);
+        localStorage.setItem(DEFAULTS.PROFILE.PROFILE_URL, token['picture_url']);
         authStore.updateExpiration();
         authStore.updatePermission();
+    }
+
+    decodeUnicodeBase64(base64) {
+        const binaryString = atob(base64);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return new TextDecoder().decode(bytes);
     }
 }

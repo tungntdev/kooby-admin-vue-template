@@ -19,7 +19,7 @@ const model = ref([
             {
                 label: 'page.menu-bar.patient-reception.list-report',
                 icon: 'pi pi-fw pi-clipboard',
-                to: '/patient/reception'
+                to: '/patient/report-request'
             },
             {
                 label: 'page.menu-bar.patient-reception.delivery-report',

@@ -19,4 +19,6 @@ interface UserService {
     fun getCurrentUserInfo(): UserDto
 
     fun getCurrentUserInfoWithExecutor(): UserDto
+
+    fun findAllCopyUsers(): List<UserDto>
 }

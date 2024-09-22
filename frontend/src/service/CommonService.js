@@ -59,4 +59,18 @@ export default class CommonService extends BaseService {
             }
         );
     }
+
+    async loadCopyUsers() {
+        return await this.request(
+            {
+                path: api.COMMON.LOAD_COPY_USERS,
+                method: 'GET'
+            },
+            {
+                secure: true,
+                notifyOnSuccess: false,
+                notifyOnError: true
+            }
+        );
+    }
 }

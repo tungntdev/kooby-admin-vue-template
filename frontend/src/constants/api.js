@@ -12,7 +12,11 @@ const API = {
         NEXT_DELIVERY_ORDER: '/secure/patient-request/next-delivery-order',
         SET_SIGNED: '/secure/patient-request/signed/',
         SET_DELIVERED: '/secure/patient-request/delivered/',
-        SET_RECEIVED: '/secure/patient-request/received/'
+        SET_RECEIVED: '/secure/patient-request/received/',
+        SET_ASSIGNMENT: '/secure/patient-request/assignment',
+        REPORT_REQUEST: '/secure/patient-request/patient-report',
+        REPORT_DELIVERY: '/secure/patient-request/delivery-report',
+        REPORT_DELIVERED: '/secure/patient-request/delivered-report'
     },
 
     DEATH_RECORD: {
@@ -35,7 +39,8 @@ const API = {
         LOAD_DEPARTMENTS: '/secure/departments',
         LOAD_PROVINCES: '/secure/address/province',
         LOAD_DISTRICTS_BY_PROVINCE: '/secure/address/district/province/',
-        LOAD_DISTRICT_BY_DISTRICT: '/secure/address/district/'
+        LOAD_DISTRICT_BY_DISTRICT: '/secure/address/district/',
+        LOAD_COPY_USERS: '/secure/user/find-copy-users'
     }
 };
 

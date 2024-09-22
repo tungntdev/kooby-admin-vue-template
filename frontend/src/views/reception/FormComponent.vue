@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 const dataInput = reactive({
-    id:null,
+    id: null,
     medicineCode: null,
     numberOrder: null,
     patientNumber: null,
@@ -115,12 +115,13 @@ function calReturnDate() {
 const checkDelivery = ref(false);
 
 async function onClickDelivery() {
-    if (checkDelivery) {
+    if (checkDelivery.value) {
         dataInput.delivery = 1;
-        dataInput.deliveryOrderNumber = await patientRequestService.getDeliveryOrder();
+        if (!dataInput.deliveryOrderNumber) {
+            dataInput.deliveryOrderNumber = await patientRequestService.getDeliveryOrder();
+        }
     } else {
         dataInput.delivery = 0;
-        dataInput.deliveryOrderNumber = '';
     }
 }
 
@@ -245,7 +246,7 @@ defineExpose({ dataInput, checkValidation });
                 <label for="delivery" class="ml-2">{{ $tt('patient_reception_component.label.is-delivery') }}</label>
             </div>
 
-            <div v-if="dataInput.delivery" class="flex flex-wrap col-span-3 gap-2 w-full">
+            <div v-if="checkDelivery" class="flex flex-wrap col-span-3 gap-2 w-full">
                 <label for="deliveryOrderNumber">{{ $tt('patient_reception_component.label.delivery-order-number') }}<span class="text-red-500">*</span></label>
                 <InputNumber
                     id="deliveryOrderNumber"
@@ -257,7 +258,7 @@ defineExpose({ dataInput, checkValidation });
                 <small v-if="validation.deliveryOrderNumber !== null && !validation.deliveryOrderNumber" class="p-error">{{ $tt('patient_reception_component.label.error-input') }}</small>
             </div>
 
-            <div v-if="dataInput.delivery" class="flex flex-wrap col-span-3 gap-2 w-full">
+            <div v-if="checkDelivery" class="flex flex-wrap col-span-3 gap-2 w-full">
                 <label for="idProvince">{{ $tt('patient_reception_component.label.id-province') }}<span class="text-red-500">*</span></label>
                 <Dropdown
                     id="idProvince"
@@ -272,7 +273,7 @@ defineExpose({ dataInput, checkValidation });
                 <small v-if="validation.idProvince !== null && !validation.idProvince" class="p-error">{{ $tt('patient_reception_component.label.error-input') }}</small>
             </div>
 
-            <div v-if="dataInput.delivery" class="flex flex-wrap col-span-3 gap-2 w-full">
+            <div v-if="checkDelivery" class="flex flex-wrap col-span-3 gap-2 w-full">
                 <label for="idDistrict">{{ $tt('patient_reception_component.label.id-district') }}<span class="text-red-500">*</span></label>
                 <Dropdown
                     id="idDistrict"
@@ -289,7 +290,7 @@ defineExpose({ dataInput, checkValidation });
         </div>
     </div>
 
-    <div v-if="dataInput.delivery" class="flex flex-col md:flex-row gap-8">
+    <div v-if="checkDelivery" class="flex flex-col md:flex-row gap-8">
         <div class="grid grid-cols-12 gap-8">
             <div class="flex flex-wrap col-span-3 gap-2 w-full">
                 <label for="deliveryCost">{{ $tt('patient_reception_component.label.delivery-cost') }}<span class="text-red-500">*</span></label>

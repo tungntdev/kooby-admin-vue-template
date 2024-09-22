@@ -4,6 +4,11 @@ const DEFAULTS = {
         EXPIRATION: 'AppAccessExpiration',
         PERMISSIONS: 'AppAccessPermissions'
     },
+    PROFILE: {
+        FULL_NAME: 'AppProFileFullName',
+        FIRST_NAME: 'AppProFileFirstName',
+        PROFILE_URL: 'AppProFileUrl'
+    },
     TOAST_TIMEOUT: {
         ERROR: 3000,
         WARN: 3000,
