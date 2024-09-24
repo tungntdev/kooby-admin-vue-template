@@ -69,5 +69,6 @@ open class PatientRequestDto : Serializable {
     //users table
     open var firstName: String? = null
     open var fullName: String? = null
+    open var imageLink: String? = null
 
 }

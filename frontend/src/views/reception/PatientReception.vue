@@ -265,6 +265,15 @@ async function assignmentClick() {
     assignmentRef.value.visible = true;
     assignmentRef.value.patientData = selectedPatient.value;
 }
+
+function getLinkAvatar(userLink) {
+    if (userLink) {
+        console.debug('/avatars/' + userLink + '-min.jpg');
+        return '/avatars/' + userLink + '-min.jpg';
+    } else {
+        return '/avatars/no-user-min.jpg';
+    }
+}
 </script>
 
 <template>
@@ -334,7 +343,7 @@ async function assignmentClick() {
 
                 <Column :header="$tt('patient-request.table.copy')" style="min-width: 80px">
                     <template #body="{ data }">
-                        {{ data.firstName }}
+                        <Avatar v-tooltip="{ value: data.firstName, showDelay: 300, hideDelay: 1000 }" :image="getLinkAvatar(data.imageLink)" shape="circle" />
                     </template>
                 </Column>
 
