@@ -13,7 +13,15 @@ const router = createRouter({
         {
             path: '/',
             component: AppLayout,
-            children: [page.APP.DASHBOARD, page.APP.PATIENT_RECEPTION.RECEPTION, page.APP.PATIENT_RECEPTION.REPORT_REQUEST, page.APP.DEATH_NUMBER, page.APP.STORAGE]
+            children: [
+                page.APP.DASHBOARD,
+                page.APP.PATIENT_RECEPTION.RECEPTION,
+                page.APP.PATIENT_RECEPTION.REPORT_REQUEST,
+                page.APP.DEATH_NUMBER,
+                page.APP.STORAGE,
+                page.APP.PATIENT_RECEPTION.REPORT_DELIVERY,
+                page.APP.PATIENT_RECEPTION.REPORT_DELIVERED
+            ]
         },
         page.AUTH.LOGIN,
         page.ACCESS.NOT_FOUND,
@@ -64,9 +72,8 @@ async function redirectIfValid(to, from, next) {
 function hasPermission(permissions) {
     const authStore = useAuthStore();
 
-    console.debug(authStore.getPermissions.value);
-    console.debug(permissions);
-    return authStore.getPermissions.value.includes(permissions);
+    return permissions.length === 0 || containsAny(permissions, authStore.getPermissions);
+    //return authStore.getPermissions.value.includes(permissions);
 }
 
 function containsAny(arr1, arr2) {

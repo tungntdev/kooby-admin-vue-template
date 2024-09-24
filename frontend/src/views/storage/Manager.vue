@@ -132,7 +132,7 @@ function onClickEdit(record) {
                     <Button type="button" :label="$tt('storage_manager.button.search')" icon="pi pi-search" severity="success" @click="fetchData" />
                 </template>
             </Toolbar>
-            <DataTable :value="storages" scrollable scrollHeight="580px" tableStyle="min-width: 40rem">
+            <DataTable :value="storages" scrollable scrollHeight="600px" tableStyle="min-width: 40rem">
                 <template #header>
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xl font-bold">{{ $tt('storage_manager.table.title') }}</span>

@@ -12,6 +12,8 @@ import Patient_reception_component from '@/locales/vi/views/patient_reception_co
 import Patient_reception_confirm from '@/locales/vi/views/patient_reception_confirm';
 import Patient_reception_assignment from '@/locales/vi/views/patient_reception_assignment';
 import Report_request from '@/locales/vi/views/report_request';
+import Report_delivery from '@/locales/vi/views/report_delivery';
+import Report_delivered from '@/locales/vi/views/report_delivered';
 
 export default {
     'service.default-message.unknown-error': 'Đã có sự cố xảy ra. Vui lòng thử lại sau.',
@@ -38,5 +40,7 @@ export default {
     ...Patient_reception_component,
     ...Patient_reception_confirm,
     ...Patient_reception_assignment,
-    ...Report_request
+    ...Report_request,
+    ...Report_delivery,
+    ...Report_delivered
 };

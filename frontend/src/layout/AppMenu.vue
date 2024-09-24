@@ -24,12 +24,12 @@ const model = ref([
             {
                 label: 'page.menu-bar.patient-reception.delivery-report',
                 icon: 'pi pi-fw pi-list',
-                to: '/patient/reception'
+                to: '/patient/report-delivery'
             },
             {
                 label: 'page.menu-bar.patient-reception.mailing-report',
                 icon: 'pi pi-fw pi-list-check',
-                to: '/patient/reception',
+                to: '/patient/report-delivered',
                 class: 'rotated-icon'
             }
         ]

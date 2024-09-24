@@ -2,32 +2,32 @@
 import { inject, ref } from 'vue';
 import ReportService from '@/service/ReportService';
 import SETTINGS from '@/constants/settings';
+import { doReadNumber, ReadingConfig } from 'read-vietnamese-number';
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
-import { doReadNumber, ReadingConfig } from 'read-vietnamese-number';
 import App from '@/constants/app';
 
 const startDate = ref(new Date());
 const endDate = ref(new Date());
 
-const listPatientRequest = ref([]);
+const listDelivery = ref([]);
 const reportService = ReportService.INSTANCE;
 const $loading = inject('$loading');
-const sumCost = ref(0);
+const sumDeliveryCost = ref(0);
 
-async function getPatientRequest() {
+async function getPatientDelivery() {
     let params = {
         startDate: startDate.value,
         endDate: endDate.value
     };
     const loader = $loading.show(SETTINGS.LOADING_PROPERTIES);
     try {
-        const res = await reportService.patientRequestReport(params);
+        const res = await reportService.deliveryReport(params);
         if (res.state) {
-            listPatientRequest.value = res.payload;
+            listDelivery.value = res.payload;
 
-            sumCost.value = listPatientRequest.value.reduce((total, item) => {
-                return total + (item.copyCost || 0);
+            sumDeliveryCost.value = listDelivery.value.reduce((total, item) => {
+                return total + (item.deliveryCost || 0);
             }, 0);
         }
     } finally {
@@ -53,7 +53,7 @@ function convertNumberToWord(cost) {
 }
 
 async function generateWordFile() {
-    const docxUrl = '../public/templateFile/MauBaoCaoTaiChinh.docx';
+    const docxUrl = '../public/templateFile/MauBaoCaoNhanChuyenPhat.docx';
 
     const templateData = await fetch(docxUrl).then((res) => res.arrayBuffer());
 
@@ -64,11 +64,12 @@ async function generateWordFile() {
         SoPhieu: new Date().getFullYear().toString() + (new Date().getMonth() + 1).toString() + new Date().getDate().toString(),
         TuNgay: formatDate(startDate.value),
         DenNgay: formatDate(endDate.value),
-        TongCong: sumCost.value.toLocaleString(),
-        SoTienBangChu: convertNumberToWord(sumCost.value),
+        NgayNhanChuyen: formatDate(startDate.value) + ' - ' + formatDate(endDate.value),
+        TongCong: sumDeliveryCost.value.toLocaleString(),
+        SoTienBangChu: convertNumberToWord(sumDeliveryCost.value),
         NgayIn: 'Hà Nội, ngày ' + new Date().getDate() + ' tháng ' + (new Date().getMonth() + 1) + ' năm ' + new Date().getFullYear(),
         NguoiThuTien: localStorage.getItem(App.PROFILE.FULL_NAME),
-        items: listPatientRequest.value
+        items: listDelivery.value
     };
 
     data.items = data.items.map((item) => {
@@ -79,8 +80,9 @@ async function generateWordFile() {
             Khoa: item.department,
             NgayVao: formatDate(item.inDate),
             NgayRa: formatDate(item.outDate),
-            NgayThu: formatDate(item.receptionDate),
-            ChiPhi: item.copyCost.toLocaleString()
+            NhanSao: formatDate(item.receptionDate),
+            HenTra: formatDate(item.appointmentPatientDate),
+            PhiChuyen: item.deliveryCost
         };
     });
     doc.setData(data);
@@ -95,7 +97,7 @@ async function generateWordFile() {
     const url = URL.createObjectURL(out);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'Doanh thu sao bệnh án ' + data.SoPhieu + ' result.docx';
+    link.download = 'Danh sách nhận chuyển bưu sao bệnh án ' + data.SoPhieu + ' result.docx';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -107,70 +109,72 @@ async function generateWordFile() {
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <h1 class="mb-4">{{ $tt('report-request.header') }}</h1>
+                <h5>{{ $tt('report-delivery.header') }}</h5>
                 <Toolbar>
                     <template v-slot:start>
-                        <label for="startDate">{{ $tt('report-request.tool.start-date') }}</label>
+                        <label for="startDate">{{ $tt('report-delivery.tool.start-date') }}</label>
                         <DatePicker v-model="startDate" class="ml-2 mr-5" dateFormat="dd/mm/yy" showIcon />
-                        <label for="endDate">{{ $tt('report-request.tool.end-date') }}</label>
+                        <label for="endDate">{{ $tt('report-delivery.tool.end-date') }}</label>
                         <DatePicker v-model="endDate" class="ml-2 mr-5" dateFormat="dd/mm/yy" showIcon />
                     </template>
                     <template v-slot:end>
-                        <Button class="mr-2" icon="pi pi-search" :label="$tt('report-request.tool.button.search')" @click="getPatientRequest()" />
-                        <Button class="p-button-info mr-2" icon="pi pi-file-export" :label="$tt('report-request.tool.button.file-export')" @click="generateWordFile()" />
+                        <Button class="mr-2" icon="pi pi-search" :label="$tt('report-delivery.tool.button.search')" @click="getPatientDelivery()" />
+                        <Button class="p-button-info mr-2" icon="pi pi-file-export" :label="$tt('report-delivery.tool.button.file-export')" @click="generateWordFile" />
                     </template>
                 </Toolbar>
             </div>
         </div>
         <div class="col-12">
             <div class="card">
-                <DataTable :scrollable="true" :value="listPatientRequest" class="mt-3" scrollDirection="both" scrollHeight="540px">
+                <DataTable :scrollable="true" :value="listDelivery" class="mt-3" scrollDirection="both" scrollHeight="540px">
                     <template #header>
                         <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-                            <span class="text-xl text-900 font-bold">
-                                {{ $tt('report-request.table.header') }}
-                                <span style="color: red; font-weight: bold"> {{ sumCost.toLocaleString() }} đồng </span>
-                            </span>
+                            <span class="text-xl text-900 font-bold">{{ $tt('report-delivery.table.header') }} {{ sumDeliveryCost.toLocaleString() }} đồng</span>
                         </div>
                     </template>
-                    <Column :style="{ width: '50px' }" :header="$tt('report-request.table.order')">
+                    <Column :style="{ width: '50px' }" :header="$tt('report-delivery.table.order')">
                         <template #body="{ data }">
                             {{ data.order }}
                         </template>
                     </Column>
-                    <Column :style="{ width: '100px' }" :header="$tt('report-request.table.number-order')">
+                    <Column :style="{ width: '100px' }" :header="$tt('report-delivery.table.number-order')">
                         <template #body="{ data }">
                             {{ data.numberOrder }}
                         </template>
                     </Column>
-                    <Column :style="{ width: '250px' }" :header="$tt('report-request.table.patient-name')">
+                    <Column :style="{ width: '250px' }" :header="$tt('report-delivery.table.patient-name')">
                         <template #body="{ data }">
                             {{ data.patientName }}
                         </template>
                     </Column>
-                    <Column :style="{ width: '100px' }" :header="$tt('report-request.table.department')">
+                    <Column :style="{ width: '100px' }" :header="$tt('report-delivery.table.department')">
                         <template #body="{ data }">
                             {{ data.department }}
                         </template>
                     </Column>
-                    <Column :style="{ width: '200px' }" :header="$tt('report-request.table.in-date')">
+                    <Column :style="{ width: '200px' }" :header="$tt('report-delivery.table.in-date')">
                         <template #body="{ data }">
                             {{ formatDate(data.inDate) }}
                         </template>
                     </Column>
-                    <Column :style="{ width: '200px' }" :header="$tt('report-request.table.out-date')">
+                    <Column :style="{ width: '200px' }" :header="$tt('report-delivery.table.out-date')">
                         <template #body="{ data }">
                             {{ formatDate(data.outDate) }}
                         </template>
                     </Column>
-                    <Column :style="{ width: '200px' }" :header="$tt('report-request.table.reception-date')">
+                    <Column :style="{ width: '200px' }" :header="$tt('report-delivery.table.reception-date')">
                         <template #body="{ data }">
                             {{ formatDate(data.receptionDate) }}
                         </template>
                     </Column>
-                    <Column :style="{ width: '200px' }" :header="$tt('report-request.table.copy-cost')">
+                    <Column :style="{ width: '200px' }" :header="$tt('report-delivery.table.appointment-date')">
                         <template #body="{ data }">
-                            {{ data.copyCost.toLocaleString() }}
+                            {{ formatDate(data.appointmentPatientDate) }}
+                        </template>
+                    </Column>
+                    <Column :style="{ width: '200px' }" :header="$tt('report-delivery.table.copy-cost')">
+                        <template #body="{ data }">
+                            {{ data.deliveryCost.toLocaleString() }}
                         </template>
                     </Column>
                 </DataTable>

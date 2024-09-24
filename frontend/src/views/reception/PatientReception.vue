@@ -292,7 +292,7 @@ async function assignmentClick() {
                     <Button type="button" :label="$tt('patient-request.button.search')" icon="pi pi-search" severity="success" @click="fetchPatientRequest" />
                 </template>
             </Toolbar>
-            <DataTable :value="patientRequests" size="small" scrollable scrollHeight="600px" tableStyle="min-width: 50rem">
+            <DataTable :value="patientRequests" scrollable scrollHeight="600px" tableStyle="min-width: 50rem">
                 <template #header>
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xl font-bold">{{ $tt('patient-request.table.title') }}</span>
@@ -331,7 +331,13 @@ async function assignmentClick() {
                         </div>
                     </template>
                 </Column>
-                <Column field="firstName" :header="$tt('patient-request.table.copy')" style="min-width: 80px"></Column>
+
+                <Column :header="$tt('patient-request.table.copy')" style="min-width: 80px">
+                    <template #body="{ data }">
+                        {{ data.firstName }}
+                    </template>
+                </Column>
+
                 <Column :header="$tt('patient-request.table.signDate')" style="min-width: 80px">
                     <template #body="{ data }">
                         {{ formatDate(data.signDate) }}

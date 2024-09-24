@@ -4,7 +4,7 @@ import AppConfigurator from './AppConfigurator.vue';
 import LangPalette from '@/components/LangPalette.vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useRouter } from 'vue-router';
-import PageSpec from '@/router/page';
+import App from '@/constants/app';
 
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
 const confirm = useConfirm();
@@ -15,15 +15,16 @@ const confirmationLogout = async () => {
         group: 'headless',
         message: 'Are you want to logout?',
         accept: async () => {
-            localStorage.removeItem('AppAccessToken')
-            localStorage.removeItem('AppAccessExpiration')
-            window.location.reload()
+            localStorage.removeItem('AppAccessToken');
+            localStorage.removeItem('AppAccessExpiration');
+            window.location.reload();
         },
         reject: () => {
-            console.debug("Cancel")
+            console.debug('Cancel');
         }
     });
-}
+};
+const avatarUrl = `avatars/${localStorage.getItem(App.PROFILE.PROFILE_URL)}-min.jpg`;
 </script>
 
 <template>
@@ -33,7 +34,7 @@ const confirmationLogout = async () => {
                 <i class="pi pi-bars"></i>
             </button>
             <router-link class="layout-topbar-logo" to="/">
-                <img src="/demo/images/logo-white.png" style="width: auto; height: 40px;"/>
+                <img src="/demo/images/logo-white.png" style="width: auto; height: 40px" />
             </router-link>
         </div>
 
@@ -75,7 +76,7 @@ const confirmationLogout = async () => {
                         <span>Messages</span>
                     </button>
                     <button class="layout-topbar-action" type="button" @click="confirmationLogout($event)">
-                        <i class="pi pi-user"></i>
+                        <Avatar :image="avatarUrl" shape="circle" />
                         <span>Profile</span>
                     </button>
                     <ConfirmPopup group="headless">

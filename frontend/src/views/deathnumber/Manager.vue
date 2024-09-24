@@ -93,7 +93,7 @@ function onClickDelete(id) {
                     <Button type="button" :label="$tt('death-number-manager.button.search')" icon="pi pi-search" severity="success" @click="fetchDeathNumbers" />
                 </template>
             </Toolbar>
-            <DataTable :value="deathNumbers" scrollable scrollHeight="500px" tableStyle="min-width: 40rem">
+            <DataTable :value="deathNumbers" scrollable scrollHeight="600px" tableStyle="min-width: 40rem">
                 <template #header>
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xl font-bold">{{ $tt('death-number-manager.table.title') }}</span>
