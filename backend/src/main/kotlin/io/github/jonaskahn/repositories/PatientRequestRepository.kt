@@ -16,12 +16,13 @@ interface PatientRequestRepository {
 
     fun delete(id: Int)
 
-    fun countByKeywordAndState(keyword: String?, state: Collection<State>): Long
+    fun countByKeywordAndState(keyword: String?, state: Collection<State>, copyUser: Int?): Long
 
     fun searchByKeywordAndStateAndOffset(
         keyword: String?,
         state: Collection<State>,
-        offset: Long
+        offset: Long,
+        copyUser: Int?
     ): Collection<PatientRequestDto>
 
 

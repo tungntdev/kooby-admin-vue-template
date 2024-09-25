@@ -7,6 +7,7 @@ import io.github.jonaskahn.entities.PatientRequest
 import io.github.jonaskahn.entities.User
 import io.github.jonaskahn.entities.enums.State
 import io.github.jonaskahn.entities.enums.Status
+import io.github.jonaskahn.middlewares.context.UserContextHolder
 import io.github.jonaskahn.repositories.AbstractBaseRepository
 import io.github.jonaskahn.repositories.PatientRequestRepository
 import io.github.jonaskahn.services.patientrequest.PatientRequestDto
@@ -41,32 +42,44 @@ class PatientRequestRepositoryImpl @Inject constructor(
 
     override fun countByKeywordAndState(
         keyword: String?,
-        state: Collection<State>
+        state: Collection<State>,
+        copyUser: Int?
     ): Long {
         val likeKeyword = "%${keyword?.trim()}%"
-        val countQueryStr = """
+        var countQueryStr = """
             SELECT COUNT(pr) FROM PatientRequest pr
+            LEFT JOIN Assignment a ON a.idPatientRequest =pr
             WHERE (pr.patientNumber LIKE :keyword 
                 OR pr.patientName LIKE :keyword 
                 OR pr.medicineCode LIKE :keyword)
                 AND pr.state in :states
                 AND pr.status = :status
         """
+
+        if (copyUser != null) {
+            countQueryStr += " AND a.idCopyUser = :copyUser"
+        }
+
         val countQuery = entityManager.createQuery(countQueryStr, Long::class.javaObjectType)
         countQuery.setParameter("keyword", likeKeyword)
         countQuery.setParameter("states", state)
         countQuery.setParameter("status", Status.ACTIVATED)
+        if (copyUser != null) {
+            val id = UserContextHolder.getCurrentUserId()
+            countQuery.setParameter("copyUser", id)
+        }
         return countQuery.singleResult
     }
 
     override fun searchByKeywordAndStateAndOffset(
         keyword: String?,
         state: Collection<State>,
-        offset: Long
+        offset: Long,
+        copyUser: Int?
     ): Collection<PatientRequestDto> {
         val likeKeyword = "%${keyword?.trim()}%"
 
-        val queryStr = """
+        var queryStr = """
             SELECT pr, a, u FROM PatientRequest pr
             LEFT JOIN Assignment a ON a.idPatientRequest =pr
             LEFT JOIN users u on a.idCopyUser = u.id
@@ -75,12 +88,20 @@ class PatientRequestRepositoryImpl @Inject constructor(
                 OR pr.medicineCode LIKE :keyword)
                 AND pr.state in :states
                 AND pr.status = :status
-            ORDER BY pr.id DESC
         """
+        if (copyUser != null) {
+            queryStr += " AND a.idCopyUser = :copyUser"
+        }
+        queryStr += " ORDER BY pr.id DESC"
+
         val query = entityManager.createQuery(queryStr, Array<Any>::class.java)
         query.setParameter("keyword", likeKeyword)
         query.setParameter("states", state)
         query.setParameter("status", Status.ACTIVATED)
+        if (copyUser != null) {
+            val id = UserContextHolder.getCurrentUserId()
+            query.setParameter("copyUser", id)
+        }
         query.firstResult = offset.toInt()
         query.maxResults = Defaults.Pageable.DEFAULT_PAGE_SIZE
 

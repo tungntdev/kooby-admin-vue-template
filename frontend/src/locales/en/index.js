@@ -13,6 +13,7 @@ import Patient_reception_assignment from '@/locales/en/views/patient_reception_a
 import Report_request from '@/locales/en/views/report_request';
 import Report_delivery from '@/locales/en/views/report_delivery';
 import Report_delivered from '@/locales/en/views/report_delivered';
+import Copy_list from '@/locales/en/views/copy_list';
 
 export default {
     'service.default-message.unknown-error': 'There is something wrong, please comeback and try later.',
@@ -40,5 +41,6 @@ export default {
     ...Patient_reception_assignment,
     ...Report_request,
     ...Report_delivery,
-    ...Report_delivered
+    ...Report_delivered,
+    ...Copy_list
 };

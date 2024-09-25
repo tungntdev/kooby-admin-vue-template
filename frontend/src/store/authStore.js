@@ -5,6 +5,7 @@ import DEFAULTS from '@/constants/app';
 const useAuthStore = defineStore('authStore', () => {
     const expiration = ref();
     const permissions = ref([]);
+    const idUser = ref();
 
     const isAuthenticated = computed(() => {
         return expiration.value !== null && expiration.value !== undefined && new Date().getTime() / 1000 < expiration.value;
@@ -24,7 +25,7 @@ const useAuthStore = defineStore('authStore', () => {
         permissions.value = JSON.parse(permissionRawData);
     }
 
-    return { isAuthenticated, updateExpiration, getPermissions, updatePermission };
+    return { isAuthenticated, updateExpiration, getPermissions, updatePermission, idUser };
 });
 
 export default useAuthStore;

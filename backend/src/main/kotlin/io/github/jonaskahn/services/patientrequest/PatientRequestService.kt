@@ -19,6 +19,7 @@ interface PatientRequestService {
         keyword: String? = null,
         states: Collection<State> = listOf(State.PENDING),
         pageNo: Long = 0L,
+        copyUser: Int? = 0,
     ): PageData<PatientRequestDto>
 
     fun findNextPatientOrder(): Long

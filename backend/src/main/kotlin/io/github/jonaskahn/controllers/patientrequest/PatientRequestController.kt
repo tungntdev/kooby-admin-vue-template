@@ -38,7 +38,7 @@ class PatientRequestController @Inject constructor(
     @POST("/patient-request/search")
     fun searchPatientRequest(request: SearchRequestForm): PageData<PatientRequestDto> {
         accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)
-        return patientRequestService.search(request.keyword, request.states, request.pageNo)
+        return patientRequestService.search(request.keyword, request.states, request.pageNo, request.copyUser)
     }
 
     @GET("/patient-request/next-order")

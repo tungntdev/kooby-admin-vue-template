@@ -30,14 +30,22 @@ internal class PatientRequestServiceImpl @Inject constructor(
     override fun search(
         keyword: String?,
         states: Collection<State>,
-        pageNo: Long
+        pageNo: Long,
+        copyUser: Int?
     ): PageData<PatientRequestDto> {
         return super.search(
             listOf(),
             states,
             pageNo,
-            { _, states -> patientRequestRepository.countByKeywordAndState(keyword, states) },
-            { _, states, offset -> patientRequestRepository.searchByKeywordAndStateAndOffset(keyword, states, offset) }
+            { _, states -> patientRequestRepository.countByKeywordAndState(keyword, states, copyUser) },
+            { _, states, offset ->
+                patientRequestRepository.searchByKeywordAndStateAndOffset(
+                    keyword,
+                    states,
+                    offset,
+                    copyUser
+                )
+            }
 
         )
     }

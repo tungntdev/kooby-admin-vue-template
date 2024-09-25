@@ -14,6 +14,7 @@ import Patient_reception_assignment from '@/locales/vi/views/patient_reception_a
 import Report_request from '@/locales/vi/views/report_request';
 import Report_delivery from '@/locales/vi/views/report_delivery';
 import Report_delivered from '@/locales/vi/views/report_delivered';
+import Copy_list from '@/locales/vi/views/copy_list';
 
 export default {
     'service.default-message.unknown-error': 'Đã có sự cố xảy ra. Vui lòng thử lại sau.',
@@ -42,5 +43,6 @@ export default {
     ...Patient_reception_assignment,
     ...Report_request,
     ...Report_delivery,
-    ...Report_delivered
+    ...Report_delivered,
+    ...Copy_list
 };

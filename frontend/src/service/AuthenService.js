@@ -35,6 +35,7 @@ export default class AuthService extends BaseService {
         localStorage.setItem(DEFAULTS.PROFILE.FULL_NAME, token['display_name']);
         localStorage.setItem(DEFAULTS.PROFILE.FIRST_NAME, token['first_name']);
         localStorage.setItem(DEFAULTS.PROFILE.PROFILE_URL, token['picture_url']);
+        authStore.idUser = token['picture_url'];
         authStore.updateExpiration();
         authStore.updatePermission();
     }
