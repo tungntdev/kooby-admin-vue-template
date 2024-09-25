@@ -1,5 +1,8 @@
-<script setup></script>
+<script setup>
+</script>
 
-<template></template>
+<template>
+    <p>Chưa có chức năng</p>
+</template>
 
 <style scoped lang="scss"></style>

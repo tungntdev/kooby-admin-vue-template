@@ -88,6 +88,44 @@ const PageSpec = {
                 component: () => import('@/views/reception/report/Delivered.vue')
             }
         },
+        RECORD: {
+            COPY_LIST:{
+                path:'/record/list',
+                name:'record_list',
+                meta:{
+                    title: 'page.menu-bar.medical-record.copy-list',
+                    permissions: []
+                },
+                component: ()=> import('@/views/record/CopyList.vue')
+            },
+            COPY_RECORD:{
+                path:'/record/copy',
+                name:'record_copy',
+                meta:{
+                    title: 'page.menu-bar.medical-record.copy-medical-record',
+                    permissions: []
+                },
+                component: ()=> import('@/views/record/CopyRecord.vue')
+            },
+            BORROW:{
+                path:'/record/borrow',
+                name:'record_borrow',
+                meta:{
+                    title: 'page.menu-bar.medical-record.borrow-medical-record',
+                    permissions: []
+                },
+                component: ()=> import('@/views/record/Borrow.vue')
+            },
+            REFUND:{
+                path:'/record/refund',
+                name:'record_refund',
+                meta:{
+                    title: 'page.menu-bar.medical-record.refund-medical-record',
+                    permissions: []
+                },
+                component: ()=> import('@/views/record/Refund.vue')
+            }
+        },
         DEATH_NUMBER: {
             path: '/death/manager',
             name: 'death',

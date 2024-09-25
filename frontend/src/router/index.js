@@ -15,12 +15,22 @@ const router = createRouter({
             component: AppLayout,
             children: [
                 page.APP.DASHBOARD,
+
                 page.APP.PATIENT_RECEPTION.RECEPTION,
                 page.APP.PATIENT_RECEPTION.REPORT_REQUEST,
-                page.APP.DEATH_NUMBER,
-                page.APP.STORAGE,
                 page.APP.PATIENT_RECEPTION.REPORT_DELIVERY,
-                page.APP.PATIENT_RECEPTION.REPORT_DELIVERED
+                page.APP.PATIENT_RECEPTION.REPORT_DELIVERED,
+
+                page.APP.DEATH_NUMBER,
+
+                page.APP.STORAGE,
+
+                page.APP.RECORD.COPY_LIST,
+                page.APP.RECORD.COPY_RECORD,
+                page.APP.RECORD.BORROW,
+                page.APP.RECORD.REFUND
+
+
             ]
         },
         page.AUTH.LOGIN,

@@ -38,21 +38,21 @@ const model = ref([
         label: 'page.menu-bar.medical-record',
         icon: 'pi pi-fw pi-briefcase',
         items: [
-            { label: 'page.menu-bar.medical-record.copy-list', icon: 'pi pi-fw pi-receipt', to: '/patient/reception' },
+            { label: 'page.menu-bar.medical-record.copy-list', icon: 'pi pi-fw pi-receipt', to: '/record/list' },
             {
                 label: 'page.menu-bar.medical-record.copy-medical-record',
                 icon: 'pi pi-fw pi-print',
-                to: '/patient/reception'
+                to: '/record/copy'
             },
             {
                 label: 'page.menu-bar.medical-record.borrow-medical-record',
                 icon: 'pi pi-fw pi-bookmark',
-                to: '/patient/reception'
+                to: '/record/borrow'
             },
             {
                 label: 'page.menu-bar.medical-record.refund-medical-record',
                 icon: 'pi pi-fw pi-bookmark-fill',
-                to: '/patient/reception'
+                to: '/record/refund'
             }
         ]
     },
