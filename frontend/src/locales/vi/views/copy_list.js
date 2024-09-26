@@ -23,11 +23,8 @@ export default {
     'copy-list.table.delivery-sate': 'Đăng ký',
 
     'copy-list.menu.options': 'Lựa chọn',
-    'copy-list.menu.edit': 'Chỉnh sửa',
-    'copy-list.menu.assignment': 'Phân công sao',
-    'copy-list.menu.signed': 'Xác nhận ký',
-    'copy-list.menu.delivered': 'Đã chuyển phát',
-    'copy-list.menu.received': 'Đã trả bệnh nhân',
-    'copy-list.menu.print-ticket': 'In phiếu chuyển',
-    'copy-list.menu.delete': 'Xóa yêu cầu'
+    'copy-list.menu.edit': 'Sửa số HS',
+    'copy-list.menu.copy': 'Sao bệnh án',
+    'copy-list.menu.confirm': 'Đã sao xong',
+    'copy-list.menu.borrow': 'Đề nghị mượn',
 };

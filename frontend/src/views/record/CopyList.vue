@@ -22,7 +22,6 @@ const patientRequests = ref();
 const selectedState = ref();
 const listStates = ref([
     { name: 'Tất cả', key: '' },
-    { name: 'Chưa xử lý', key: '0' },
     { name: 'Đã phân công', key: '1' },
     { name: 'Đang sao', key: '2' },
     { name: 'Đã ký', key: '4' },
@@ -118,7 +117,6 @@ const getDeliveryState = (data) => {
 };
 
 const createRef = ref();
-const nextNumberOrder = ref(0);
 
 async function onClickNew() {
     createRef.value.visible = true;
@@ -137,39 +135,19 @@ const toggle = (data) => {
         command: async () => await edit()
     };
 
-    const assignmentMenu = {
-        label: translate('copy-list.menu.assignment'),
-        icon: 'pi pi-user',
-        command: async () => await assignmentClick()
+    const copyMenu = {
+        label: translate('copy-list.menu.copy'),
+        icon: 'pi pi-pen-to-square',
     };
 
-    const signedMenu = {
-        label: translate('copy-list.menu.signed'),
+    const confirmMenu = {
+        label: translate('copy-list.menu.confirm'),
         icon: 'pi pi-pencil',
-        command: async () => await signedClick()
     };
 
-    const deliveredMenu = {
-        label: translate('copy-list.menu.delivered'),
-        icon: 'pi pi-send',
-        command: async () => await deliveredClick()
-    };
-
-    const receivedMenu = {
-        label: translate('copy-list.menu.received'),
-        icon: 'pi pi-verified',
-        command: async () => await receivedClick()
-    };
-
-    const printTicketMenu = {
-        label: translate('copy-list.menu.print-ticket'),
-        icon: 'pi pi-print'
-    };
-
-    const deleteMenu = {
-        label: translate('copy-list.menu.delete'),
-        icon: 'pi pi-trash',
-        command: async () => await deleteClick()
+    const borrowMenu = {
+        label: translate('copy-list.menu.borrow'),
+        icon: 'pi pi-send'
     };
 
     switch (data.state) {
@@ -177,7 +155,7 @@ const toggle = (data) => {
             items.value = [
                 {
                     label: translate('copy-list.menu.options'),
-                    items: [editMenu, assignmentMenu, signedMenu, receivedMenu]
+                    items: [editMenu, copyMenu, confirmMenu, borrowMenu]
                 }
             ];
             break;
@@ -186,7 +164,7 @@ const toggle = (data) => {
             items.value = [
                 {
                     label: translate('copy-list.menu.options'),
-                    items: [editMenu, assignmentMenu, signedMenu, receivedMenu]
+                    items: [editMenu, copyMenu, confirmMenu, borrowMenu]
                 }
             ];
             break;
@@ -195,7 +173,7 @@ const toggle = (data) => {
             items.value = [
                 {
                     label: translate('copy-list.menu.options'),
-                    items: [editMenu, signedMenu, receivedMenu]
+                    items: [copyMenu, borrowMenu]
                 }
             ];
             break;
@@ -204,7 +182,7 @@ const toggle = (data) => {
             items.value = [
                 {
                     label: translate('copy-list.menu.options'),
-                    items: [editMenu, receivedMenu]
+                    items: [copyMenu, borrowMenu]
                 }
             ];
             break;
@@ -213,18 +191,11 @@ const toggle = (data) => {
             items.value = [
                 {
                     label: translate('copy-list.menu.options'),
-                    items: [editMenu]
+                    items: [copyMenu]
                 }
             ];
             break;
     }
-    if (data.delivery === 1) {
-        items.value[0].items.push(printTicketMenu);
-        if (!data.deliveryDate) {
-            items.value[0].items.push(deliveredMenu);
-        }
-    }
-    items.value[0].items.push(deleteMenu);
 };
 const editRef = ref();
 const dataEdit = ref();
@@ -236,36 +207,6 @@ async function edit() {
 
 const confirmRef = ref();
 
-async function deleteClick() {
-    await confirmRef.value.confirmClick();
-    confirmRef.value.patient = selectedPatient.value;
-    confirmRef.value.confirmType = Common.CONFIRM_TYPE.DELETE;
-}
-
-async function signedClick() {
-    await confirmRef.value.confirmClick();
-    confirmRef.value.patient = selectedPatient.value;
-    confirmRef.value.confirmType = Common.CONFIRM_TYPE.SIGNED;
-}
-
-async function deliveredClick() {
-    await confirmRef.value.confirmClick();
-    confirmRef.value.patient = selectedPatient.value;
-    confirmRef.value.confirmType = Common.CONFIRM_TYPE.DELIVERED;
-}
-
-async function receivedClick() {
-    await confirmRef.value.confirmClick();
-    confirmRef.value.patient = selectedPatient.value;
-    confirmRef.value.confirmType = Common.CONFIRM_TYPE.RECEIVED;
-}
-
-const assignmentRef = ref();
-
-async function assignmentClick() {
-    assignmentRef.value.visible = true;
-    assignmentRef.value.patientData = selectedPatient.value;
-}
 
 function getLinkAvatar(userLink) {
     if (userLink) {
@@ -281,10 +222,6 @@ function getLinkAvatar(userLink) {
     <div>
         <div class="card">
             <Toolbar class="mb-2">
-                <template v-slot:start>
-                    <Button type="button" :label="$tt('copy-list.button.add')" icon="pi pi-pen-to-square" @click="onClickNew()" />
-                </template>
-
                 <template v-slot:center>
                     <div class="flex flex-wrap gap-3">
                         <div v-for="state in listStates" :key="state.key" class="flex align-items-center">
@@ -370,10 +307,8 @@ function getLinkAvatar(userLink) {
                 <template #end></template>
             </Paginator>
         </div>
-        <create-reception ref="createRef" @callFetchData="fetchPatientRequest" />
         <edit-reception ref="editRef" :dataEdit="dataEdit" @callFetchData="fetchPatientRequest" />
         <confirm-component ref="confirmRef" @callFetchData="fetchPatientRequest" />
-        <assignment ref="assignmentRef" @callFetchData="fetchPatientRequest" />
     </div>
 </template>
 
