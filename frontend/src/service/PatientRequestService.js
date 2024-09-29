@@ -157,4 +157,18 @@ export default class PatientRequestService extends BaseService {
             }
         );
     }
+
+    async setCopied(id) {
+        return await this.request(
+            {
+                path: api.PATIENT_REQUEST.SET_COPIED + id,
+                method: 'PUT'
+            },
+            {
+                secure: true,
+                notifyOnSuccess: true,
+                notifyOnError: true
+            }
+        );
+    }
 }

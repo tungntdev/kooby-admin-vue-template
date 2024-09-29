@@ -15,6 +15,9 @@ import Report_request from '@/locales/vi/views/report_request';
 import Report_delivery from '@/locales/vi/views/report_delivery';
 import Report_delivered from '@/locales/vi/views/report_delivered';
 import Copy_list from '@/locales/vi/views/copy_list';
+import Copy_record from '@/locales/vi/views/copy_record';
+import Copy_confirm from '@/locales/vi/views/copy_confirm';
+import Edit_copy_record from '@/locales/vi/views/edit_copy_record';
 
 export default {
     'service.default-message.unknown-error': 'Đã có sự cố xảy ra. Vui lòng thử lại sau.',
@@ -44,5 +47,8 @@ export default {
     ...Report_request,
     ...Report_delivery,
     ...Report_delivered,
-    ...Copy_list
+    ...Copy_list,
+    ...Copy_record,
+    ...Copy_confirm,
+    ...Edit_copy_record
 };

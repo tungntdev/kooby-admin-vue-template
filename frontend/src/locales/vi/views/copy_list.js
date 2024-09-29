@@ -25,6 +25,6 @@ export default {
     'copy-list.menu.options': 'Lựa chọn',
     'copy-list.menu.edit': 'Sửa số HS',
     'copy-list.menu.copy': 'Sao bệnh án',
-    'copy-list.menu.confirm': 'Đã sao xong',
-    'copy-list.menu.borrow': 'Đề nghị mượn',
+    'copy-list.menu.confirm': 'Xác nhận đã sao',
+    'copy-list.menu.borrow': 'Đề nghị mượn'
 };

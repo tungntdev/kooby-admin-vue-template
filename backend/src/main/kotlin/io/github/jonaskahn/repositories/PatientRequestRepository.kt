@@ -14,6 +14,8 @@ interface PatientRequestRepository {
 
     fun update(entity: PatientRequest)
 
+    fun update
+
     fun delete(id: Int)
 
     fun countByKeywordAndState(keyword: String?, state: Collection<State>, copyUser: Int?): Long
@@ -45,6 +47,5 @@ interface PatientRequestRepository {
     fun deliveryReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse>
 
     fun deliveredReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse>
-
 
 }

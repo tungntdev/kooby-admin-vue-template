@@ -6,6 +6,7 @@ import { nextTick } from 'vue';
 import { translate } from '@/locales';
 import useAuthStore from '@/store/authStore';
 import logger from '@/common/logger';
+import App from '@/constants/app';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -29,8 +30,6 @@ const router = createRouter({
                 page.APP.RECORD.COPY_RECORD,
                 page.APP.RECORD.BORROW,
                 page.APP.RECORD.REFUND
-
-
             ]
         },
         page.AUTH.LOGIN,
@@ -81,9 +80,8 @@ async function redirectIfValid(to, from, next) {
 
 function hasPermission(permissions) {
     const authStore = useAuthStore();
-
-    return permissions.length === 0 || containsAny(permissions, authStore.getPermissions);
-    //return authStore.getPermissions.value.includes(permissions);
+    const userRoles = localStorage.getItem(App.ACCESS.PERMISSIONS);
+    return userRoles.includes(permissions);
 }
 
 function containsAny(arr1, arr2) {

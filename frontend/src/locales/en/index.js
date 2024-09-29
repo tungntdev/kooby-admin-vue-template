@@ -14,6 +14,9 @@ import Report_request from '@/locales/en/views/report_request';
 import Report_delivery from '@/locales/en/views/report_delivery';
 import Report_delivered from '@/locales/en/views/report_delivered';
 import Copy_list from '@/locales/en/views/copy_list';
+import Copy_record from '@/locales/en/views/copy_record';
+import Copy_confirm from '@/locales/en/views/copy_confirm';
+import Edit_copy_record from '@/locales/en/views/edit_copy_record';
 
 export default {
     'service.default-message.unknown-error': 'There is something wrong, please comeback and try later.',
@@ -42,5 +45,8 @@ export default {
     ...Report_request,
     ...Report_delivery,
     ...Report_delivered,
-    ...Copy_list
+    ...Copy_list,
+    ...Copy_record,
+    ...Copy_confirm,
+    ...Edit_copy_record
 };

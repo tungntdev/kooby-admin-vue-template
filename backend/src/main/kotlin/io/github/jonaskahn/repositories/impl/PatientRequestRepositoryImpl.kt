@@ -170,7 +170,27 @@ class PatientRequestRepositoryImpl @Inject constructor(
         if (entity != null) {
             entity.state = State.IN_PROGRESS
             entityManager.merge(entity)
+
+            var assignmentAvailable: Assignment?
+            try {
+                val queryStr =
+                    "SELECT a FROM Assignment a WHERE a.idPatientRequest = :idPatientRequest AND a.status = :status"
+                val query = entityManager.createQuery(queryStr, Assignment::class.java)
+                query.setParameter("idPatientRequest", entity)
+                query.setParameter("status", Status.ACTIVATED)
+                assignmentAvailable = query.singleResult
+            } catch (e: NoResultException) {
+                assignmentAvailable = null
+            }
+            if (assignmentAvailable != null) {
+                assignmentAvailable.idPatientRequest = entity
+                assignmentAvailable.idCopyUser = UserContextHolder.getCurrentUserId().toInt()
+                assignmentAvailable.completionDate = Instant.now()
+                entityManager.merge(assignmentAvailable)
+            }
         }
+
+
     }
 
     override fun setDelivered(id: Int) {

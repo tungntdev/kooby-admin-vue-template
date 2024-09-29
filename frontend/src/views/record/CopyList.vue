@@ -3,11 +3,10 @@ import { inject, onBeforeMount, ref } from 'vue';
 import PatientRequestService from '@/service/PatientRequestService';
 import Common from '@/constants/common';
 import SETTINGS from '@/constants/settings';
-import CreateReception from '@/views/reception/CreateReception.vue';
 import { translate } from '@/locales';
-import EditReception from '@/views/reception/EditReception.vue';
-import ConfirmComponent from '@/views/reception/confirm/ConfirmComponent.vue';
-import Assignment from '@/views/reception/Assignment.vue';
+import CopyRecord from '@/views/record/CopyRecord.vue';
+import EditPatientNumber from '@/views/record/EditPatientNumber.vue';
+import ConfirmCopied from '@/views/record/ConfirmCopied.vue';
 
 const patientRequestService = PatientRequestService.INSTANCE;
 
@@ -16,13 +15,13 @@ const pageNumber = ref(0);
 const totalPages = ref();
 const totalItems = ref();
 const currentItems = ref();
-const states = ref([]);
+const states = ref([Common.STATES.ASSIGNED]);
 const patientRequests = ref();
 
-const selectedState = ref();
+const selectedState = ref('1');
 const listStates = ref([
     { name: 'Tất cả', key: '' },
-    { name: 'Đã phân công', key: '1' },
+    { name: 'Mới phân công', key: '1' },
     { name: 'Đang sao', key: '2' },
     { name: 'Đã ký', key: '4' },
     { name: 'Hoàn thành', key: '6' }
@@ -116,12 +115,6 @@ const getDeliveryState = (data) => {
     }
 };
 
-const createRef = ref();
-
-async function onClickNew() {
-    createRef.value.visible = true;
-}
-
 const menu = ref();
 const selectedPatient = ref();
 const items = ref([]);
@@ -132,17 +125,19 @@ const toggle = (data) => {
     const editMenu = {
         label: translate('copy-list.menu.edit'),
         icon: 'pi pi-file-edit',
-        command: async () => await edit()
+        command: async () => await editClick()
     };
 
     const copyMenu = {
         label: translate('copy-list.menu.copy'),
         icon: 'pi pi-pen-to-square',
+        command: async () => await copyClick()
     };
 
     const confirmMenu = {
         label: translate('copy-list.menu.confirm'),
-        icon: 'pi pi-pencil',
+        icon: 'pi pi-check-circle',
+        command: async () => await confirmClick()
     };
 
     const borrowMenu = {
@@ -197,20 +192,30 @@ const toggle = (data) => {
             break;
     }
 };
-const editRef = ref();
-const dataEdit = ref();
-
-async function edit() {
-    editRef.value.visible = true;
-    dataEdit.value = selectedPatient.value;
-}
-
 const confirmRef = ref();
 
+async function confirmClick() {
+    await confirmRef.value.confirmClick();
+    confirmRef.value.patient = selectedPatient.value;
+    confirmRef.value.confirmType = Common.CONFIRM_TYPE.COPIED;
+}
+
+const copyRecordRef = ref();
+
+async function copyClick() {
+    copyRecordRef.value.visible = true;
+    copyRecordRef.value.patientData = selectedPatient.value;
+}
+
+const editPatientNumberRef = ref();
+
+async function editClick() {
+    editPatientNumberRef.value.visible = true;
+    editPatientNumberRef.value.patientData = selectedPatient.value;
+}
 
 function getLinkAvatar(userLink) {
     if (userLink) {
-        console.debug('/avatars/' + userLink + '-min.jpg');
         return '/avatars/' + userLink + '-min.jpg';
     } else {
         return '/avatars/no-user-min.jpg';
@@ -307,8 +312,9 @@ function getLinkAvatar(userLink) {
                 <template #end></template>
             </Paginator>
         </div>
-        <edit-reception ref="editRef" :dataEdit="dataEdit" @callFetchData="fetchPatientRequest" />
-        <confirm-component ref="confirmRef" @callFetchData="fetchPatientRequest" />
+        <copy-record ref="copyRecordRef" />
+        <edit-patient-number ref="editPatientNumberRef" />
+        <confirm-copied ref="confirmRef" @callFetchData="fetchPatientRequest" />
     </div>
 </template>
 

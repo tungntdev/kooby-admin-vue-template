@@ -1,8 +1,7 @@
-<script setup>
-</script>
+<script setup></script>
 
 <template>
-    <p>Chưa có chức năng</p>
+    <p>Chưa khả dụng</p>
 </template>
 
 <style scoped lang="scss"></style>

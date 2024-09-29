@@ -1,3 +1,5 @@
+import COMMON from '@/constants/common';
+
 const PageSpec = {
     AUTH: {
         LOGIN: {
@@ -45,7 +47,7 @@ const PageSpec = {
             name: 'dashboard',
             meta: {
                 title: 'page.menu-title.page.dashboard',
-                permissions: []
+                permissions: [COMMON.ROLES.USER]
             },
             component: () => import('@/views/Dashboard.vue')
         },
@@ -55,7 +57,7 @@ const PageSpec = {
                 name: 'reception',
                 meta: {
                     title: 'page.menu-title.page.patient-reception',
-                    permissions: []
+                    permissions: [COMMON.ROLES.DATA_ENTRY_PERSON]
                 },
                 component: () => import('@/views/reception/PatientReception.vue')
             },
@@ -64,7 +66,7 @@ const PageSpec = {
                 name: 'report_request',
                 meta: {
                     title: 'page.menu-bar.patient-reception.list-report',
-                    permissions: []
+                    permissions: [COMMON.ROLES.DATA_ENTRY_PERSON]
                 },
                 component: () => import('@/views/reception/report/Request.vue')
             },
@@ -73,7 +75,7 @@ const PageSpec = {
                 name: 'report_delivery',
                 meta: {
                     title: 'page.menu-bar.patient-reception.delivery-report',
-                    permissions: []
+                    permissions: [COMMON.ROLES.DATA_ENTRY_PERSON]
                 },
                 component: () => import('@/views/reception/report/Delivery.vue')
             },
@@ -83,47 +85,47 @@ const PageSpec = {
                 name: 'report_delivered',
                 meta: {
                     title: 'page.menu-bar.patient-reception.delivered-report',
-                    permissions: []
+                    permissions: [COMMON.ROLES.DATA_ENTRY_PERSON]
                 },
                 component: () => import('@/views/reception/report/Delivered.vue')
             }
         },
         RECORD: {
-            COPY_LIST:{
-                path:'/record/list',
-                name:'record_list',
-                meta:{
+            COPY_LIST: {
+                path: '/record/list',
+                name: 'record_list',
+                meta: {
                     title: 'page.menu-bar.medical-record.copy-list',
-                    permissions: []
+                    permissions: [COMMON.ROLES.COPY_MAN]
                 },
-                component: ()=> import('@/views/record/CopyList.vue')
+                component: () => import('@/views/record/CopyList.vue')
             },
-            COPY_RECORD:{
-                path:'/record/copy',
-                name:'record_copy',
-                meta:{
+            COPY_RECORD: {
+                path: '/record/copy',
+                name: 'record_copy',
+                meta: {
                     title: 'page.menu-bar.medical-record.copy-medical-record',
                     permissions: []
                 },
-                component: ()=> import('@/views/record/CopyRecord.vue')
+                component: () => import('@/views/record/CopyRecord.vue')
             },
-            BORROW:{
-                path:'/record/borrow',
-                name:'record_borrow',
-                meta:{
+            BORROW: {
+                path: '/record/borrow',
+                name: 'record_borrow',
+                meta: {
                     title: 'page.menu-bar.medical-record.borrow-medical-record',
                     permissions: []
                 },
-                component: ()=> import('@/views/record/Borrow.vue')
+                component: () => import('@/views/record/Borrow.vue')
             },
-            REFUND:{
-                path:'/record/refund',
-                name:'record_refund',
-                meta:{
+            REFUND: {
+                path: '/record/refund',
+                name: 'record_refund',
+                meta: {
                     title: 'page.menu-bar.medical-record.refund-medical-record',
                     permissions: []
                 },
-                component: ()=> import('@/views/record/Refund.vue')
+                component: () => import('@/views/record/Refund.vue')
             }
         },
         DEATH_NUMBER: {
@@ -131,7 +133,7 @@ const PageSpec = {
             name: 'death',
             meta: {
                 title: 'page.menu-title.page.number-allocation',
-                permissions: []
+                permissions: [COMMON.ROLES.DOCUMENT_ISSUER]
             },
             component: () => import('@/views/deathnumber/Manager.vue')
         },
@@ -140,7 +142,7 @@ const PageSpec = {
             name: 'storage',
             meta: {
                 title: 'page.menu-title.page.medical-record-storage',
-                permissions: []
+                permissions: [COMMON.ROLES.MANAGER]
             },
             component: () => import('@/views/storage/Manager.vue')
         },

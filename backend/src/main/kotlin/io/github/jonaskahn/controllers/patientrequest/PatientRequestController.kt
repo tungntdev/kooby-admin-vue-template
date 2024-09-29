@@ -65,6 +65,12 @@ class PatientRequestController @Inject constructor(
         return patientRequestService.setReceived(id)
     }
 
+    @PUT("/patient-request/copied/{id}")
+    fun progressedPatientRequest(@PathParam("id") id: Long) {
+        accessVerifier.requireRole(Roles.COPY_MAN)
+        return patientRequestService.setInProgress(id)
+    }
+
     @PUT("/patient-request/delivered/{id}")
     fun deliveredPatientRequest(@PathParam("id") id: Int) {
         accessVerifier.requireRole(Roles.DATA_ENTRY_PERSON)

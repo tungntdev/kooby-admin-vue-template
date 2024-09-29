@@ -16,11 +16,24 @@ const COMMON = {
         DELETED: 9
     },
 
-    CONFIRM_TYPE:{
+    CONFIRM_TYPE: {
         DELETE: 'delete',
         SIGNED: 'signed',
         RECEIVED: 'received',
-        DELIVERED: 'delivered'
+        DELIVERED: 'delivered',
+        COPIED: 'copied'
+    },
+
+    ROLES: {
+        USER: 'USER',
+        ADMIN: 'ADMIN',
+        SECRETARY: 'SECRETARY',
+        COPY_MAN: 'COPY_MAN',
+        VALIDATOR: 'VALIDATOR',
+        LEADER: 'LEADER',
+        DATA_ENTRY_PERSON: 'DATA_ENTRY_PERSON',
+        MANAGER: 'MANAGER',
+        DOCUMENT_ISSUER: 'DOCUMENT_ISSUER'
     },
 
     DEFAULT_ROW_PAGE: 10

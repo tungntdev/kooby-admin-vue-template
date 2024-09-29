@@ -11,6 +11,7 @@ const API = {
         NEXT_PATIENT_ORDER: '/secure/patient-request/next-order',
         NEXT_DELIVERY_ORDER: '/secure/patient-request/next-delivery-order',
         SET_SIGNED: '/secure/patient-request/signed/',
+        SET_COPIED: '/secure/patient-request/copied/',
         SET_DELIVERED: '/secure/patient-request/delivered/',
         SET_RECEIVED: '/secure/patient-request/received/',
         SET_ASSIGNMENT: '/secure/patient-request/assignment',
