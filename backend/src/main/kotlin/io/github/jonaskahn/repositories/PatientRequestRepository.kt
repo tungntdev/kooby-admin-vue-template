@@ -14,7 +14,7 @@ interface PatientRequestRepository {
 
     fun update(entity: PatientRequest)
 
-    fun update
+    fun updatePatientCopy(entity: PatientRequest)
 
     fun delete(id: Int)
 

@@ -32,6 +32,10 @@ class PatientRequestRepositoryImpl @Inject constructor(
         entityManager.merge(entity)
     }
 
+    override fun updatePatientCopy(entity: PatientRequest) {
+        TODO("Not yet implemented")
+    }
+
     override fun delete(id: Int) {
         val entity = entityManager.find(PatientRequest::class.java, id)
         if (entity != null) {

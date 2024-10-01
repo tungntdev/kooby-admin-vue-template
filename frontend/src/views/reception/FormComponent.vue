@@ -75,11 +75,28 @@ const patientRequestService = PatientRequestService.INSTANCE;
 
 const { listProvinces } = storeToRefs(commonStore);
 
+const formatDate = (value) => {
+    if (value) {
+        const newDate = new Date(value);
+        return newDate.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    }
+};
+
 onBeforeMount(async () => {
     await commonStore.loadDepartments();
     await commonStore.loadProvinces();
     if (props.dataFormEdit) {
         Object.assign(dataInput, props.dataFormEdit);
+
+        dataInput.inDate = formatDate(dataInput.inDate);
+        dataInput.outDate = formatDate(dataInput.outDate);
+        dataInput.receptionDate = formatDate(dataInput.receptionDate);
+        dataInput.appointmentPatientDate = formatDate(dataInput.appointmentPatientDate);
+
         if (dataInput.delivery === 1) {
             checkDelivery.value = true;
         }
