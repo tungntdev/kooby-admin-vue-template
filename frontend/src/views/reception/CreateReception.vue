@@ -17,7 +17,6 @@ async function onClickSave() {
     if (formComponentRef.value.checkValidation()) {
         const loader = $loading.show(SETTINGS.LOADING_PROPERTIES);
         try {
-            console.debug(formComponentRef.value.dataInput);
             await patientRequestService.create(formComponentRef.value.dataInput);
         } finally {
             setTimeout(() => loader.hide(), 500);

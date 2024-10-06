@@ -10,21 +10,26 @@ import jakarta.inject.Inject
 import java.time.LocalDate
 
 internal class PatientRequestServiceImpl @Inject constructor(
-    private val patientRequestRepository: PatientRequestRepository,
+    private val repository: PatientRequestRepository,
 ) : PatientRequestService, PagingService() {
     override fun createRequest(request: PatientRequestForm) {
         val newRequest = PatientRequestEntityToDtoMapper.INSTANCE.formToPatientRequest(request)
-        patientRequestRepository.create(newRequest)
+        repository.create(newRequest)
     }
 
     override fun updateRequest(request: PatientRequestForm) {
-        val existingRequest = PatientRequestEntityToDtoMapper.INSTANCE.formToPatientRequest(request)
-        patientRequestRepository.update(existingRequest)
+        val exitingPatient = request.id?.let { repository.findById(it) }
+
+        if (exitingPatient != null) {
+            PatientRequestEntityToDtoMapper.INSTANCE.formTargetPatientRequest(request, exitingPatient)
+        }
+        if (exitingPatient != null) {
+            repository.update(exitingPatient)
+        }
     }
 
-
     override fun deleteRequest(requestId: Int) {
-        return patientRequestRepository.delete(requestId)
+        return repository.delete(requestId)
     }
 
     override fun search(
@@ -37,9 +42,9 @@ internal class PatientRequestServiceImpl @Inject constructor(
             listOf(),
             states,
             pageNo,
-            { _, states -> patientRequestRepository.countByKeywordAndState(keyword, states, copyUser) },
+            { _, states -> repository.countByKeywordAndState(keyword, states, copyUser) },
             { _, states, offset ->
-                patientRequestRepository.searchByKeywordAndStateAndOffset(
+                repository.searchByKeywordAndStateAndOffset(
                     keyword,
                     states,
                     offset,
@@ -51,42 +56,42 @@ internal class PatientRequestServiceImpl @Inject constructor(
     }
 
     override fun findNextPatientOrder(): Long {
-        return patientRequestRepository.findNextPatientOrder()
+        return repository.findNextPatientOrder()
     }
 
     override fun findNextPatientDeliveryNumber(): Long {
-        return patientRequestRepository.findNextPatientDeliveryNumber()
+        return repository.findNextPatientDeliveryNumber()
     }
 
     override fun setSigned(id: Int) {
-        return patientRequestRepository.setSigned(id)
+        return repository.setSigned(id)
     }
 
     override fun setReceived(id: Int) {
-        return patientRequestRepository.setReceived(id)
+        return repository.setReceived(id)
     }
 
     override fun setInProgress(id: Long) {
-        return patientRequestRepository.setInProgress(id)
+        return repository.setInProgress(id)
     }
 
     override fun setDelivered(id: Int) {
-        return patientRequestRepository.setDelivered(id)
+        return repository.setDelivered(id)
     }
 
     override fun setAssignment(id: Int, copierId: Int, appointmentDate: LocalDate) {
-        return patientRequestRepository.setAssignment(id, copierId, appointmentDate)
+        return repository.setAssignment(id, copierId, appointmentDate)
     }
 
     override fun patientRequestReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse> {
-        return patientRequestRepository.patientRequestReport(startDate, endDate)
+        return repository.patientRequestReport(startDate, endDate)
     }
 
     override fun deliveryReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse> {
-        return patientRequestRepository.deliveryReport(startDate, endDate)
+        return repository.deliveryReport(startDate, endDate)
     }
 
     override fun deliveredReport(startDate: LocalDate?, endDate: LocalDate?): Collection<ReportResponse> {
-        return patientRequestRepository.deliveredReport(startDate, endDate)
+        return repository.deliveredReport(startDate, endDate)
     }
 }

@@ -17,5 +17,5 @@ interface DeathRecordMapper {
     fun toDeathRecord(record: DeathRecordForm): DeathRecord
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    fun updateDeathRecordFromForm(recordForm: DeathRecordForm, @MappingTarget existingRecord: DeathRecord)
+    fun fromRecordFormToDeathRecord(recordForm: DeathRecordForm, @MappingTarget existingRecord: DeathRecord)
 }

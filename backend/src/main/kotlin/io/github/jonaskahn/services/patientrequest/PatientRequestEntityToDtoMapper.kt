@@ -5,9 +5,7 @@ import io.github.jonaskahn.controllers.patientrequest.ReportResponse
 import io.github.jonaskahn.entities.Assignment
 import io.github.jonaskahn.entities.PatientRequest
 import io.github.jonaskahn.entities.User
-import org.mapstruct.Mapper
-import org.mapstruct.Mapping
-import org.mapstruct.Mappings
+import org.mapstruct.*
 import org.mapstruct.factory.Mappers
 
 @Mapper
@@ -26,6 +24,9 @@ interface PatientRequestEntityToDtoMapper {
     fun toDto(patientRequest: PatientRequest, assignment: Assignment?, user: User?): PatientRequestDto
 
     fun formToPatientRequest(formPatient: PatientRequestForm): PatientRequest
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    fun formTargetPatientRequest(formPatient: PatientRequestForm, @MappingTarget exitingPatient: PatientRequest)
 
     fun toReportResponse(patientRequest: Collection<PatientRequest>): Collection<ReportResponse>
 }

@@ -44,6 +44,10 @@ class PatientRequestRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun findById(id: Int): PatientRequest {
+        return entityManager.find(PatientRequest::class.java, id)
+    }
+
     override fun countByKeywordAndState(
         keyword: String?,
         state: Collection<State>,

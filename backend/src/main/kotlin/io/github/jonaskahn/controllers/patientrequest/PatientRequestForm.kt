@@ -1,7 +1,6 @@
 package io.github.jonaskahn.controllers.patientrequest
 
 import java.time.Instant
-import java.time.LocalDate
 
 class PatientRequestForm {
     var id: Int? = null
@@ -11,10 +10,10 @@ class PatientRequestForm {
     var patientName: String? = null
     var department: String? = null
     var saveNumber: Int? = null
-    var inDate: LocalDate? = null
-    var outDate: LocalDate? = null
+    var inDate: Instant? = null
+    var outDate: Instant? = null
     var receptionDate: Instant? = null
-    var appointmentPatientDate: LocalDate? = null
+    var appointmentPatientDate: Instant? = null
     var copyQuantity: Int? = null
     var copyCost: Int? = null
     var note: String? = null

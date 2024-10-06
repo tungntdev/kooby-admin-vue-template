@@ -8,7 +8,6 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.Size
 import org.hibernate.annotations.ColumnDefault
 import java.time.Instant
-import java.time.LocalDate
 
 @Entity
 @Table(name = "patient_request")
@@ -41,17 +40,10 @@ open class PatientRequest : BaseEntity() {
     @Column(name = "save_number")
     open var saveNumber: Int? = null
 
-    @Column(name = "in_date")
-    open var inDate: LocalDate? = null
-
-    @Column(name = "out_date")
-    open var outDate: LocalDate? = null
 
     @Column(name = "reception_date")
     open var receptionDate: Instant? = null
 
-    @Column(name = "appointment_patient_date")
-    open var appointmentPatientDate: LocalDate? = null
 
     @ColumnDefault("1")
     @Column(name = "copy_quantity")
@@ -109,4 +101,13 @@ open class PatientRequest : BaseEntity() {
     @ColumnDefault("0")
     @Column(name = "delivery")
     open var delivery: Int? = null
+
+    @Column(name = "in_date")
+    open var inDate: Instant? = null
+
+    @Column(name = "out_date")
+    open var outDate: Instant? = null
+
+    @Column(name = "appointment_patient_date")
+    open var appointmentPatientDate: Instant? = null
 }

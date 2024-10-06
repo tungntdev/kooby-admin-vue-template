@@ -18,7 +18,7 @@ class DeathRecordServiceImpl @Inject constructor(
 
     override fun update(record: DeathRecordForm) {
         val existingRecord = repository.findById(record.id!!)
-        DeathRecordMapper.INSTANCE.updateDeathRecordFromForm(record, existingRecord)
+        DeathRecordMapper.INSTANCE.fromRecordFormToDeathRecord(record, existingRecord)
 
         return repository.update(existingRecord)
     }

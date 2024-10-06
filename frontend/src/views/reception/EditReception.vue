@@ -20,6 +20,13 @@ async function onClickUpdate() {
     if (formComponentRef.value.checkValidation()) {
         const loader = $loading.show(SETTINGS.LOADING_PROPERTIES);
         try {
+            formComponentRef.value.dataInput.inDate = new Date(formComponentRef.value.dataInput.inDate);
+            formComponentRef.value.dataInput.outDate = new Date(formComponentRef.value.dataInput.outDate);
+            formComponentRef.value.dataInput.receptionDate = new Date(formComponentRef.value.dataInput.receptionDate);
+            formComponentRef.value.dataInput.appointmentPatientDate = new Date(formComponentRef.value.dataInput.appointmentPatientDate);
+
+            console.debug(formComponentRef.value.dataInput);
+
             await patientRequestService.update(formComponentRef.value.dataInput);
         } finally {
             setTimeout(() => loader.hide(), 500);
@@ -27,6 +34,12 @@ async function onClickUpdate() {
             await emit('callFetchData');
         }
     }
+}
+
+function convertToUTCPlus7(date) {
+    const utcDate = new Date(date);
+    utcDate.setHours(utcDate.getHours() + 7);
+    return utcDate;
 }
 </script>
 

@@ -78,11 +78,8 @@ const { listProvinces } = storeToRefs(commonStore);
 const formatDate = (value) => {
     if (value) {
         const newDate = new Date(value);
-        return newDate.toLocaleDateString('en-GB', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
+        const timeZone = 'Asia/Ho_Chi_Minh';
+        return newDate.toLocaleDateString('vi-VN', { timeZone });
     }
 };
 
@@ -91,11 +88,12 @@ onBeforeMount(async () => {
     await commonStore.loadProvinces();
     if (props.dataFormEdit) {
         Object.assign(dataInput, props.dataFormEdit);
-
         dataInput.inDate = formatDate(dataInput.inDate);
         dataInput.outDate = formatDate(dataInput.outDate);
         dataInput.receptionDate = formatDate(dataInput.receptionDate);
         dataInput.appointmentPatientDate = formatDate(dataInput.appointmentPatientDate);
+
+        console.debug(dataInput.inDate);
 
         if (dataInput.delivery === 1) {
             checkDelivery.value = true;
@@ -161,6 +159,10 @@ async function getDeliveryCost() {
     }
 }
 
+async function showInDate() {
+    console.debug(dataInput.inDate);
+}
+
 defineExpose({ dataInput, checkValidation });
 </script>
 
@@ -209,7 +211,7 @@ defineExpose({ dataInput, checkValidation });
         <div class="grid grid-cols-12 gap-8">
             <div class="flex flex-wrap col-span-3 gap-2 w-full">
                 <label for="inDate">{{ $tt('patient_reception_component.label.in-date') }}<span class="text-red-500">*</span></label>
-                <DatePicker id="inDate" showIcon dateFormat="dd/mm/yy" @input="resetValidation('inDate')" :class="{ 'p-invalid': validation.inDate !== null && !validation.inDate }" v-model="dataInput.inDate" />
+                <DatePicker id="inDate" @change="showInDate" showIcon dateFormat="dd/mm/yy" @input="resetValidation('inDate')" :class="{ 'p-invalid': validation.inDate !== null && !validation.inDate }" v-model="dataInput.inDate" />
                 <small v-if="validation.inDate !== null && !validation.inDate" class="p-error">{{ $tt('patient_reception_component.label.error-input') }}</small>
             </div>
             <div class="flex flex-wrap col-span-3 gap-2 w-full">

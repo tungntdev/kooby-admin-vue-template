@@ -18,6 +18,8 @@ interface PatientRequestRepository {
 
     fun delete(id: Int)
 
+    fun findById(id: Int): PatientRequest
+
     fun countByKeywordAndState(keyword: String?, state: Collection<State>, copyUser: Int?): Long
 
     fun searchByKeywordAndStateAndOffset(

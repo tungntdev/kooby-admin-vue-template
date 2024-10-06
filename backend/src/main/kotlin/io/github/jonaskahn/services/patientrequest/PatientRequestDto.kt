@@ -20,10 +20,10 @@ open class PatientRequestDto : Serializable {
     open var patientName: String? = null
     open var department: String? = null
     open var saveNumber: Int? = null
-    open var inDate: LocalDate? = null
-    open var outDate: LocalDate? = null
+    open var inDate: Instant? = null
+    open var outDate: Instant? = null
     open var receptionDate: Instant? = null
-    open var appointmentPatientDate: LocalDate? = null
+    open var appointmentPatientDate: Instant? = null
     open var copyQuantity: Int? = null
     open var copyCost: Int? = null
     open var note: String? = null

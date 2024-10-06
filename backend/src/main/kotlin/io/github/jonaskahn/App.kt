@@ -245,5 +245,6 @@ fun Kooby.web() {
 }
 
 fun main(args: Array<String>) {
+    System.setProperty("user.timezone", "Asia/Ho_Chi_Minh");
     runApp(args, ::App)
 }
